@@ -15,6 +15,7 @@
     "sql.js": "^1.6.2"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
     "gh-pages": "^6.0.0",
