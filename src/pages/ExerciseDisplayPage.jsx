@@ -4,7 +4,7 @@ import ExerciseRunner from '../components/ExerciseRunner';
 
 const exerciseDetailsMap = {
   "1": {
-    taskDescription: "Retrieve the usernames and email addresses of all users who registered on or after '2024-02-15' (inclusive) and are marked as 'active'.\n\nReference date for 'today' is '2024-03-15'. Your query should select users registered in the 30 days leading up to this reference date.",
+    taskDescription: "Retrieve the usernames and email addresses of all users who registered on or after '2024-02-15' (inclusive) and are marked as 'active'.\n\nReference date for 'today' is '2024-03-15'. Your query should select users registered in the 30 days leading up to this reference date.\n\nThe results should be ordered by username in ascending order.",
     schema: `CREATE TABLE users (
       user_id INT PRIMARY KEY,
       username VARCHAR(255) NOT NULL,
@@ -25,7 +25,7 @@ const exerciseDetailsMap = {
     initialQuery: "SELECT username, email FROM users WHERE status = 'active';"
   },
   "2": {
-    taskDescription: "Select the username and registration_date for all users who are 'inactive' and registered before '2024-01-01'.",
+    taskDescription: "Select the username and registration_date for all users who are 'inactive' and registered before '2024-01-01'.\n\nThe results should be ordered by username in ascending order.",
     schema: `CREATE TABLE users (
       user_id INT PRIMARY KEY,
       username VARCHAR(255) NOT NULL,
@@ -65,7 +65,7 @@ const exerciseDetailsMap = {
     initialQuery: "SELECT * FROM users ORDER BY status;"
   },
   "4": {
-    taskDescription: "List the names of customers and the product names of items they have ordered. Only include orders that have been 'Shipped'.",
+     taskDescription: "List the names of customers and the product names of items they have ordered. Only include orders that have been 'Shipped'.\n\nThe results should be ordered by customer_name in ascending order, then by product_name in ascending order.",
     schema: `
   CREATE TABLE customers (
       customer_id INT PRIMARY KEY,
