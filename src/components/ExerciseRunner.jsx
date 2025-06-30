@@ -107,6 +107,7 @@ export default function ExerciseRunner({ exerciseDetail }) {
       <SqlEditor
         value={userQuery}
         onChange={setUserQuery} // Directly pass setUserQuery
+        onExecute={runUserQuery} // Pass runUserQuery to handle Shift+Enter
         height="128px" // h-32 equivalent
       />
 
