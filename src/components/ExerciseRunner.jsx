@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import initSqlJs from 'sql.js';
+import SqlEditor from './SqlEditor'; // Import the SqlEditor component
 
 // Helper function to compare results - simplified version
 const compareResults = (userResult, correctResult) => {
@@ -103,11 +104,10 @@ export default function ExerciseRunner({ exerciseDetail }) {
       </pre>
 
       <h4 className="text-lg font-semibold mt-6 mb-2 text-gray-900 dark:text-gray-100">Your SQL Query</h4>
-      <textarea
+      <SqlEditor
         value={userQuery}
-        onChange={e => setUserQuery(e.target.value)}
-        className="w-full h-32 font-mono text-sm p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100"
-        placeholder="Enter your SQL query here..."
+        onChange={setUserQuery} // Directly pass setUserQuery
+        height="128px" // h-32 equivalent
       />
 
       <button

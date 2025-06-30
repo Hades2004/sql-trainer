@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import initSqlJs from "sql.js";
 import tips from "../data/sqlTips.json";
+import SqlEditor from "../components/SqlEditor"; // Import the SqlEditor component
 
 export default function HomePage() {
   const [db, setDb] = useState(null);
@@ -40,6 +41,10 @@ export default function HomePage() {
     }
   }, []); // Removed lastTipIndex from dependencies to prevent re-triggering on its change
 
+  const handleQueryChange = (value) => {
+    setQuery(value);
+  };
+
   const runQuery = () => {
     if (!db) {
       alert("Database not yet loaded. Please wait.");
@@ -57,11 +62,10 @@ export default function HomePage() {
   return (
     <div className="p-6 max-w-4xl mx-auto font-sans">
       {/* Title is now part of Navbar, so it's removed from here */}
-      <textarea
+      <SqlEditor
         value={query}
-        onChange={e => setQuery(e.target.value)}
-        className="w-full h-40 font-mono text-sm p-3 rounded border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter your SQL query here..."
+        onChange={handleQueryChange}
+        height="160px" // Adjusted height for the new editor
       />
 
       <button
