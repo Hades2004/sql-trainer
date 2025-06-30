@@ -33,9 +33,9 @@ export default function App() {
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/lections" element={<LectionsPage />} />
-          <Route path="/exercises" element={<ExercisesPage />} />
+          <Route path="/sql-trainer/" element={<HomePage />} />
+          <Route path="/sql-trainer/lections" element={<LectionsPage />} />
+          <Route path="/sql-trainer/exercises" element={<ExercisesPage />} />
         </Routes>
       </main>
     </div>

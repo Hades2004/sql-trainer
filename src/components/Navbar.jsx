@@ -22,7 +22,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex-1 flex items-center justify-start">
-            <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
+            <Link to="/sql-trainer/" className="text-2xl font-bold text-gray-900 dark:text-white">
               🧪 SQL Trainer
             </Link>
           </div>
@@ -62,7 +62,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   tabIndex="-1"
                 >
                   <Link
-                    to="/"
+                    to="/sql-trainer/"
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                     role="menuitem"
                     tabIndex="-1"
@@ -72,7 +72,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                     Home
                   </Link>
                   <Link
-                    to="/lections"
+                    to="/sql-trainer/lections"
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                     role="menuitem"
                     tabIndex="-1"
@@ -82,7 +82,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                     Lections
                   </Link>
                   <Link
-                    to="/exercises"
+                    to="/sql-trainer/exercises"
                     className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                     role="menuitem"
                     tabIndex="-1"
