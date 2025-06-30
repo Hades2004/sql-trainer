@@ -1,0 +1,12 @@
+[
+  "Use `SELECT DISTINCT` to return only unique values.",
+  "Always back up your database before making major changes.",
+  "Use `WHERE` clauses to filter data effectively.",
+  "Understand the difference between `JOIN`, `LEFT JOIN`, and `RIGHT JOIN`.",
+  "Normalize your database to reduce redundancy.",
+  "Use indexes to speed up queries on large tables.",
+  "Avoid using `SELECT *` in production code; specify columns instead.",
+  "Use `LIMIT` to restrict the number of rows returned by a query.",
+  "Learn about transactions to ensure data integrity.",
+  "Comment your SQL code for better readability."
+]
