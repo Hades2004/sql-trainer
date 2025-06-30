@@ -8,9 +8,24 @@ export default function ExercisesPage() {
       url: "/sql-trainer/exercise/1", // Updated URL
       description: "Retrieve specific user data based on registration date and status."
     },
-    { id: 2, title: "Exercise 2: Filter data using WHERE (Placeholder)", url: "#", description: "Apply conditions to your queries." },
-    { id: 3, title: "Exercise 3: Sort results with ORDER BY (Placeholder)", url: "#", description: "Learn to sort your query output." },
-    { id: 4, title: "Exercise 4: Simple JOIN (Placeholder)", url: "#", description: "Combine data from two tables." },
+    {
+      id: 2,
+      title: "Exercise 2: Filter data using WHERE",
+      url: "/sql-trainer/exercise/2",
+      description: "Apply conditions to your queries."
+    },
+    {
+      id: 3,
+      title: "Exercise 3: Sort results with ORDER BY",
+      url: "/sql-trainer/exercise/3",
+      description: "Learn to sort your query output."
+    },
+    {
+      id: 4,
+      title: "Exercise 4: Simple JOIN",
+      url: "/sql-trainer/exercise/4",
+      description: "Combine data from two tables."
+    },
   ];
 
   return (

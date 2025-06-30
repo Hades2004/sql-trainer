@@ -37,7 +37,8 @@ export default function App() {
           <Route path="/sql-trainer/" element={<HomePage />} />
           <Route path="/sql-trainer/lections" element={<LectionsPage />} />
           <Route path="/sql-trainer/exercises" element={<ExercisesPage />} />
-          <Route path="/sql-trainer/exercise/1" element={<ExerciseDisplayPage />} /> {/* Add new route */}
+          {/* Route for specific exercises, uses exerciseId parameter */}
+          <Route path="/sql-trainer/exercise/:exerciseId" element={<ExerciseDisplayPage />} />
         </Routes>
       </main>
     </div>
