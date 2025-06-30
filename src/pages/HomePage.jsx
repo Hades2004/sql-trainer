@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import initSqlJs from "sql.js";
+import tips from "../data/sqlTips.json";
 
 export default function HomePage() {
   const [db, setDb] = useState(null);
   const [query, setQuery] = useState("SELECT * FROM users;");
+  const [currentTip, setCurrentTip] = useState("");
   const [results, setResults] = useState([]);
   // Dark mode state is kept in App.jsx to be shared across pages
 
@@ -19,6 +21,10 @@ export default function HomePage() {
       }
     };
     loadDb();
+
+    // Select a random tip
+    const randomIndex = Math.floor(Math.random() * tips.length);
+    setCurrentTip(tips[randomIndex]);
   }, []);
 
   const runQuery = () => {
@@ -37,6 +43,12 @@ export default function HomePage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto font-sans">
+      {/* Tip Section */}
+      <div className="mb-6 p-4 bg-blue-100 dark:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded-lg">
+        <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 SQL Tip:</h3>
+        <p className="text-blue-700 dark:text-blue-300">{currentTip}</p>
+      </div>
+
       {/* Title is now part of Navbar, so it's removed from here */}
       <textarea
         value={query}
