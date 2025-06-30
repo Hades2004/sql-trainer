@@ -65,6 +65,7 @@ export default function HomePage() {
       <SqlEditor
         value={query}
         onChange={handleQueryChange}
+        onExecute={runUserQuery} // Pass runUserQuery to handle Shift+Enter
         height="160px" // Adjusted height for the new editor
       />
 
