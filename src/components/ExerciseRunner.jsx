@@ -148,7 +148,7 @@ export default function ExerciseRunner({ exerciseDetail }) {
               </thead>
               <tbody>
                 {res.values.map((row, i) => (
-                  <tr key={i} className={`text-sm ${i % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-850"}`}>
+                  <tr key={i} className={`text-sm ${i % 2 === 0 ? "bg-white dark:bg-gray-800" : "dark:bg-gray-850"}`}>
                     {row.map((cell, j) => (
                       <td key={j} className="border-b border-gray-200 dark:border-gray-700 px-3 py-2 text-gray-800 dark:text-gray-200">
                         {cell !== null && cell !== undefined ? cell.toString() : "NULL"}
