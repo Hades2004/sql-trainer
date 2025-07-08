@@ -1,0 +1,15 @@
+{
+  "databaseNotLoaded": "Database not yet loaded. Please wait.",
+  "errorExecutingQuery": "Error: {{message}}",
+  "runQuery": "▶️ Run",
+  "enterQueryPrompt": "💡 Enter an SQL query and click \"Run\" to see results.",
+  "sqlTip": "💡 SQL Tip:",
+  "sqlTrainer": "🧪 SQL Trainer",
+  "lightMode": "☀️ Light",
+  "darkMode": "🌙 Dark",
+  "openUserMenu": "Open user menu",
+  "home": "Home",
+  "lections": "Lections",
+  "exercises": "Exercises",
+  "quiz": "Quiz"
+}
