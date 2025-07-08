@@ -126,7 +126,7 @@ export default function QuizPage() {
                                 (selectedAnswer === option ?
                                   'bg-red-100 dark:bg-red-800 border-red-500 dark:border-red-600 text-red-700 dark:text-red-200 ring-red-500' :
                                   'bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 opacity-80')) :
-                              'bg-white dark:bg-gray-750 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-blue-500'
+                              'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 focus:ring-blue-500'
                           }
                         `}
             >
