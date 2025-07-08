@@ -106,7 +106,7 @@ const exerciseDetailsMap = {
   }
 };
 
-export default function ExerciseDisplayPage() {
+export default function ExerciseDisplayPage({ darkMode }) {
   const { exerciseId } = useParams();
   const exerciseDetail = exerciseDetailsMap[exerciseId];
 
@@ -127,7 +127,7 @@ export default function ExerciseDisplayPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">SQL Query Challenge: Exercise {exerciseId}</h1>
-      <ExerciseRunner exerciseDetail={exerciseDetail} />
+      <ExerciseRunner exerciseDetail={exerciseDetail} darkMode={darkMode} />
     </div>
   );
 }

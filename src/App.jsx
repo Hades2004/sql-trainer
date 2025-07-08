@@ -39,7 +39,7 @@ export default function App() {
           <Route path="/sql-trainer/lections" element={<LectionsPage />} />
           <Route path="/sql-trainer/exercises" element={<ExercisesPage />} />
           {/* Route for specific exercises, uses exerciseId parameter */}
-          <Route path="/sql-trainer/exercise/:exerciseId" element={<ExerciseDisplayPage />} />
+          <Route path="/sql-trainer/exercise/:exerciseId" element={<ExerciseDisplayPage darkMode={darkMode} />} />
           <Route path="/sql-trainer/quiz" element={<QuizPage />} />
         </Routes>
       </main>

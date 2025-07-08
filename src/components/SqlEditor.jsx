@@ -1,12 +1,13 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { sql } from '@codemirror/lang-sql';
-import { oneDark } from '@codemirror/theme-one-dark';
+import { oneDark } from '@codemirror/theme-one-dark'; // Assuming this is the dark theme
+import { basicLight } from '@codemirror/theme-basic'; // Attempting to import a light theme
 import { keymap, EditorView } from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
 import { Prec } from '@codemirror/state';
 
-const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = false }) => {
+const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = false, theme }) => {
   const customKeymap = Prec.high(keymap.of([
     {
       key: "Shift-Enter",
@@ -31,7 +32,7 @@ const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = fa
         customKeymap, // Add our custom keymap with higher precedence
         EditorView.lineWrapping
       ]}
-      theme={oneDark} // Using a predefined dark theme
+      theme={theme} // Using a predefined dark theme
       onChange={onChange}
       readOnly={readOnly}
       options={{

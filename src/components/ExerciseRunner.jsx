@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import initSqlJs from 'sql.js';
 import SqlEditor from './SqlEditor'; // Import the SqlEditor component
+import { oneDark } from '@codemirror/theme-one-dark';
+import { basicLight } from '@codemirror/theme-basic';
 
 // Helper function to compare results - simplified version
 const compareResults = (userResult, correctResult) => {
@@ -30,7 +32,7 @@ const compareResults = (userResult, correctResult) => {
   return true;
 };
 
-export default function ExerciseRunner({ exerciseDetail }) {
+export default function ExerciseRunner({ exerciseDetail, darkMode }) {
   const { taskDescription, schema, sampleDataSetup, correctQuery, initialQuery = "SELECT 'your query here';" } = exerciseDetail;
 
   const [db, setDb] = useState(null);
@@ -109,6 +111,7 @@ export default function ExerciseRunner({ exerciseDetail }) {
         onChange={setUserQuery} // Directly pass setUserQuery
         onExecute={runUserQuery} // Pass runUserQuery to handle Shift+Enter
         height="128px" // h-32 equivalent
+        theme={darkMode ? oneDark : basicLight} // Pass the theme based on darkMode
       />
 
       <button
