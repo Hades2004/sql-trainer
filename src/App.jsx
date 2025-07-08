@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import LectionsPage from "./pages/LectionsPage";
 import ExercisesPage from "./pages/ExercisesPage";
 import ExerciseDisplayPage from "./pages/ExerciseDisplayPage"; // Import the new page
+import QuizPage from "./pages/QuizPage"; // Import the QuizPage
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/sql-trainer/exercises" element={<ExercisesPage />} />
           {/* Route for specific exercises, uses exerciseId parameter */}
           <Route path="/sql-trainer/exercise/:exerciseId" element={<ExerciseDisplayPage />} />
+          <Route path="/sql-trainer/quiz" element={<QuizPage />} />
         </Routes>
       </main>
     </div>

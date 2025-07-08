@@ -91,6 +91,16 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   >
                     Exercises
                   </Link>
+                  <Link
+                    to="/sql-trainer/quiz"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="user-menu-item-3" // Assuming this is the next available ID
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    Quiz
+                  </Link>
                 </div>
               )}
             </div>

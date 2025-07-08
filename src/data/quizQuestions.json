@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "questionText": "What does this SQL query do?",
+    "sqlQuery": "SELECT ProductName, Price FROM Products WHERE Price > 50;",
+    "options": [
+      "Selects all products with a price less than 50.",
+      "Selects the name and price of products with a price greater than 50.",
+      "Selects only the product names with a price greater than 50.",
+      "Selects all columns for products with a price of 50."
+    ],
+    "correctAnswer": "Selects the name and price of products with a price greater than 50."
+  },
+  {
+    "id": 2,
+    "questionText": "What is the result of this SQL query?",
+    "sqlQuery": "SELECT COUNT(DISTINCT Country) FROM Customers;",
+    "options": [
+      "The total number of customers.",
+      "The number of unique countries present in the Customers table.",
+      "The list of all countries in the Customers table.",
+      "The count of customers from a specific country."
+    ],
+    "correctAnswer": "The number of unique countries present in the Customers table."
+  },
+  {
+    "id": 3,
+    "questionText": "Which keyword is used to sort the result-set?",
+    "sqlQuery": "SELECT Name, Age FROM Employees --- BY Age DESC;",
+    "options": [
+      "SORT BY",
+      "ORDER BY",
+      "GROUP BY",
+      "ARRANGE BY"
+    ],
+    "correctAnswer": "ORDER BY"
+  }
+]
