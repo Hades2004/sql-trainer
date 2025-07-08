@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import initSqlJs from 'sql.js';
 import SqlEditor from './SqlEditor'; // Import the SqlEditor component
+import { oneDark } from '@codemirror/theme-one-dark';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { materialDark } from '@uiw/codemirror-theme-material';
+import { sublime } from '@uiw/codemirror-theme-sublime';
+
 
 // Helper function to compare results - simplified version
 const compareResults = (userResult, correctResult) => {
@@ -30,7 +35,7 @@ const compareResults = (userResult, correctResult) => {
   return true;
 };
 
-export default function ExerciseRunner({ exerciseDetail }) {
+export default function ExerciseRunner({ exerciseDetail, darkMode }) {
   const { taskDescription, schema, sampleDataSetup, correctQuery, initialQuery = "SELECT 'your query here';" } = exerciseDetail;
 
   const [db, setDb] = useState(null);
@@ -109,6 +114,7 @@ export default function ExerciseRunner({ exerciseDetail }) {
         onChange={setUserQuery} // Directly pass setUserQuery
         onExecute={runUserQuery} // Pass runUserQuery to handle Shift+Enter
         height="128px" // h-32 equivalent
+        theme={darkMode ? sublime : 'light'} // Pass the theme based on darkMode
       />
 
       <button

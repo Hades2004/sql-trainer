@@ -1,23 +1,22 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { sql } from '@codemirror/lang-sql';
-import { oneDark } from '@codemirror/theme-one-dark';
 import { keymap, EditorView } from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
 import { Prec } from '@codemirror/state';
 
-const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = false }) => {
+const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = false, theme }) => {
   const customKeymap = Prec.high(keymap.of([
     {
       key: "Shift-Enter",
-      run: (view) => { // Added view argument
+      run: () => {
         if (onExecute) {
           onExecute();
-          return true; // Indicate that the key event was handled
+          return true;
         }
-        return false; // Let other keymaps handle it
+        return false;
       },
-      preventDefault: true, // Added to be safe
+      preventDefault: true,
     }
   ]));
 
@@ -27,30 +26,26 @@ const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = fa
       height={height}
       extensions={[
         sql(),
-        keymap.of(defaultKeymap), // Ensure default keymap is present
-        customKeymap, // Add our custom keymap with higher precedence
+        keymap.of(defaultKeymap),
+        customKeymap,
         EditorView.lineWrapping
       ]}
-      theme={oneDark} // Using a predefined dark theme
+      theme={theme}
       onChange={onChange}
       readOnly={readOnly}
-      options={{
-        lint: true, // Enable linting for SQL (basic syntax checking)
-      }}
       basicSetup={{
-        foldGutter: true,
-        dropCursor: true,
-        allowMultipleSelections: true,
-        indentOnInput: true,
-        syntaxHighlighting: true,
-        autocompletion: true, // Enable basic autocompletion
-        bracketMatching: true,
-        closeBrackets: true,
+        lineNumbers: true,
         highlightActiveLine: true,
         highlightSelectionMatches: true,
+        autocompletion: true,
+        bracketMatching: true,
+        closeBrackets: true,
+        indentOnInput: true,
+        foldGutter: true,
+        dropCursor: true,
         history: true,
-        lineNumbers: true,
         drawSelection: true,
+        syntaxHighlighting: true,
       }}
     />
   );

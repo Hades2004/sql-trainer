@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import initSqlJs from "sql.js";
 import tips from "../data/sqlTips.json";
 import SqlEditor from "../components/SqlEditor"; // Import the SqlEditor component
+import { sublime } from "@uiw/codemirror-theme-sublime";
 
-export default function HomePage() {
+export default function HomePage({ darkMode }) {
   const [db, setDb] = useState(null);
   const [query, setQuery] = useState("SELECT * FROM users;");
   const [currentTip, setCurrentTip] = useState("");
@@ -67,6 +68,7 @@ export default function HomePage() {
         onChange={handleQueryChange}
         onExecute={runQuery} // Pass runUserQuery to handle Shift+Enter
         height="160px" // Adjusted height for the new editor
+        theme={darkMode ? sublime : 'light'} // Pass the theme based on darkMode
       />
 
       <button
