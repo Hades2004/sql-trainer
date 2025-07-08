@@ -48,6 +48,64 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
     This will start the Vite development server, typically on `http://localhost:5173` (the port might vary, check your terminal output). Open this URL in your web browser to see the application.
 
+## 🧪 Running Tests
+
+This project uses [Vitest](https://vitest.dev/) for running unit and integration tests, along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro) for testing React components.
+
+Available test scripts (defined in `package.json`):
+
+*   **Run all tests in watch mode:**
+    ```bash
+    npm test
+    ```
+    or
+    ```bash
+    yarn test
+    ```
+    This is useful during development as it re-runs tests on file changes.
+
+*   **Run all tests once:**
+    ```bash
+    npm test -- --run
+    ```
+    or
+    ```bash
+    yarn test --run
+    ```
+    *(Note: the extra `--` is to pass the `--run` flag to the `vitest` command itself, not to npm/yarn).*
+
+*   **Run tests with a UI:**
+    Vitest provides an interactive UI for a better testing experience.
+    ```bash
+    npm run test:ui
+    ```
+    or
+    ```bash
+    yarn test:ui
+    ```
+    This will open a browser window where you can see test results, filter tests, etc.
+
+*   **Generate coverage report:**
+    To see test coverage, run:
+    ```bash
+    npm run coverage
+    ```
+    or
+    ```bash
+    yarn coverage
+    ```
+    This will output a coverage summary to the console and generate a full HTML report in the `coverage/` directory.
+
+### Test Structure
+
+Tests are co-located with the components or pages they test (e.g., `src/components/Navbar.test.jsx` tests `src/components/Navbar.jsx`). This makes it easy to find tests related to a specific piece of code.
+
+The tests aim to cover:
+*   Component rendering and basic structure.
+*   User interactions (e.g., button clicks, form inputs simulated via `userEvent`).
+*   Logic within components, often by mocking dependencies (like `sql.js` or data files) to isolate the unit under test.
+*   Correct feedback and state changes based on user actions.
+
 ## 🛠️ How it Works
 
 This application leverages the power of `sql.js`, a JavaScript library that allows you to create and query an SQLite database entirely in the browser.
