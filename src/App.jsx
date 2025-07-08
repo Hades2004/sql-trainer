@@ -35,7 +35,7 @@ export default function App() {
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <main>
         <Routes>
-          <Route path="/sql-trainer/" element={<HomePage />} />
+          <Route path="/sql-trainer/" element={<HomePage darkMode={darkMode} />} />
           <Route path="/sql-trainer/lections" element={<LectionsPage />} />
           <Route path="/sql-trainer/exercises" element={<ExercisesPage />} />
           {/* Route for specific exercises, uses exerciseId parameter */}
