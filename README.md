@@ -129,28 +129,7 @@ This application leverages the power of `sql.js`, a JavaScript library that allo
 
 ## 🚀 Deployment
 
-This project is configured for easy deployment to GitHub Pages.
-
-1.  **Build the project:**
-    This command bundles the application for production into the `dist/` directory.
-    ```bash
-    npm run build
-    ```
-    or with yarn:
-    ```bash
-    yarn build
-    ```
-
-2.  **Deploy to GitHub Pages:**
-    This command uses `gh-pages` to push the contents of the `dist/` directory to the `gh-pages` branch of your repository, making it live.
-    ```bash
-    npm run deploy
-    ```
-    or with yarn:
-    ```bash
-    yarn deploy
-    ```
-    Ensure your GitHub repository settings are configured to serve from the `gh-pages` branch.
+This project is configured for easy deployment to GitHub Pages. It automatically deployes every time something is commited to the main branch.
 
 ## 🤝 Contributing
 
