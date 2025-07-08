@@ -1,0 +1,63 @@
+# Name des Workflows, der in der "Actions"-Übersicht angezeigt wird
+name: Deploy to GitHub Pages
+
+# Trigger: Wann soll der Workflow ausgeführt werden?
+on:
+  # Wird bei jedem Push auf den main-Branch ausgeführt
+  push:
+    branches:
+      - main
+  # Ermöglicht es, den Workflow auch manuell über die Actions-UI zu starten
+  workflow_dispatch:
+
+# Berechtigungen, die der Workflow benötigt.
+# Der moderne Weg benötigt keine manuellen Tokens mehr.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Stellt sicher, dass immer nur ein Deployment zur selben Zeit läuft.
+# Ältere, laufende Workflows für diesen Branch werden abgebrochen.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+# Die einzelnen Jobs, die der Workflow ausführt
+jobs:
+  # 1. Job: Die Seite bauen (Build-Prozess)
+  build:
+    runs-on: ubuntu-latest # Führt den Job auf einem von GitHub gehosteten Linux-Server aus
+    steps:
+      - name: Checkout your repository
+        uses: actions/checkout@v4 # Lädt deinen Code herunter
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22 # <<< ANPASSEN: Gib hier deine benötigte Node.js-Version an
+          cache: 'npm' # <<< ANPASSEN: Nutze 'yarn', wenn du Yarn verwendest
+
+      - name: Install dependencies
+        run: npm ci # Nutzt package-lock.json für eine exakte Installation. 'npm install' geht auch.
+
+      - name: Build the project
+        run: npm run build # <<< ANPASSEN: Das ist der wichtigste Befehl. Ersetze ihn durch deinen Build-Befehl (z.B. 'yarn build', 'hugo', 'jekyll build')
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3 # Lädt den Build-Output als Artefakt hoch
+        with:
+          # Pfad zum Ordner, der nach dem Build veröffentlicht werden soll
+          path: ./dist # <<< ANPASSEN: Ändere 'dist' zu deinem Build-Output-Ordner (z.B. 'build', 'public', '_site')
+
+  # 2. Job: Die Seite veröffentlichen (Deployment-Prozess)
+  deploy:
+    needs: build # Dieser Job startet erst, wenn der 'build'-Job erfolgreich war
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # Schreibt die URL der veröffentlichten Seite in die Action-Logs
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # Diese Action übernimmt die Veröffentlichung des Artefakts
