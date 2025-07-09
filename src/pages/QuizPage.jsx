@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import quizQuestions from '../data/quizQuestions.json';
 
 export default function QuizPage() {
+  const { t } = useTranslation();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
@@ -51,16 +53,16 @@ export default function QuizPage() {
     return (
       <div className="p-4 md:p-6 max-w-2xl mx-auto">
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6 text-center">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">Quiz Completed!</h2>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">{t('quizCompleted')}</h2>
           <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">
-            You scored {score} out of {quizQuestions.length}.
+            {t('quizScore', { score: score, totalQuestions: quizQuestions.length })}
           </p>
           <button
             onClick={handleRestartQuiz}
             className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow
                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
           >
-            Restart Quiz
+            {t('restartQuiz')}
           </button>
         </div>
       </div>
@@ -73,7 +75,7 @@ export default function QuizPage() {
     return (
       <div className="p-6 max-w-2xl mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg">
         <p className="text-xl text-gray-700 dark:text-gray-200">
-          {quizQuestions.length === 0 ? "No quiz questions available." : "Loading quiz..."}
+          {quizQuestions.length === 0 ? t('noQuizQuestions') : t('loadingQuiz')}
         </p>
       </div>
     );
@@ -85,8 +87,8 @@ export default function QuizPage() {
         {/* Progress Bar (Optional but good for UX) */}
         <div className="mb-4">
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
-            <span>Question {currentQuestionIndex + 1} of {quizQuestions.length}</span>
-            <span>Score: {score}</span>
+            <span>{t('questionOutOf', { current: currentQuestionIndex + 1, total: quizQuestions.length })}</span>
+            <span>{t('scoreLabel', { score: score })}</span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
             <div
@@ -137,7 +139,7 @@ export default function QuizPage() {
 
         {showFeedback && (
           <div className={`p-3 rounded-md mb-4 text-sm font-medium ${isCorrect ? 'bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-200' : 'bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-200'}`}>
-            {isCorrect ? "🎉 Correct!" : `🤔 Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`}
+            {isCorrect ? t('correctExclamation') : t('incorrectFeedback', { correctAnswer: currentQuestion.correctAnswer })}
           </div>
         )}
 
@@ -148,7 +150,7 @@ export default function QuizPage() {
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800
                      disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-opacity"
         >
-          {currentQuestionIndex === quizQuestions.length - 1 ? "Show Results" : "Next Question"}
+          {currentQuestionIndex === quizQuestions.length - 1 ? t('showResults') : t('nextQuestion')}
         </button>
       </div>
     </div>

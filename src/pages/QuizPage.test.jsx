@@ -48,11 +48,11 @@ describe('QuizPage Component with Regular Data', () => {
     render(<QuizPage />);
     const firstQuestion = mockQuizDataRegular[0];
     expect(screen.getByText(`${firstQuestion.id}. ${firstQuestion.questionText}`)).toBeInTheDocument();
-    expect(screen.getByText(`Question 1 of ${mockQuizDataRegular.length}`)).toBeInTheDocument();
+    expect(screen.getByText(`Question ${1} of ${mockQuizDataRegular.length}`)).toBeInTheDocument();
     mockQuizDataRegular[0].options.forEach(option => {
       expect(screen.getByRole('button', { name: option })).toBeInTheDocument();
     });
-    expect(screen.getByRole('button', { name: "Next Question" })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /Next Question/i })).toBeDisabled();
   });
 
   it('allows selecting an answer and shows feedback (correct answer)', async () => {
@@ -64,9 +64,9 @@ describe('QuizPage Component with Regular Data', () => {
       await userEvent.click(correctAnswerOption);
     });
 
-    expect(screen.getByText("🎉 Correct!")).toBeInTheDocument();
+    expect(screen.getByText(/🎉 Correct!/i)).toBeInTheDocument();
     expect(screen.getByText(`Score: 1`)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: "Next Question" })).toBeEnabled();
+    expect(screen.getByRole('button', { name: /Next Question/i })).toBeEnabled();
     firstQuestion.options.forEach(option => {
       expect(screen.getByRole('button', { name: option })).toBeDisabled();
     });
@@ -84,7 +84,7 @@ describe('QuizPage Component with Regular Data', () => {
 
     expect(screen.getByText(`🤔 Incorrect. The correct answer is: ${firstQuestion.correctAnswer}`)).toBeInTheDocument();
     expect(screen.getByText(`Score: 0`)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: "Next Question" })).toBeEnabled();
+    expect(screen.getByRole('button', { name: /Next Question/i })).toBeEnabled();
   });
 
   it('navigates to the next question', async () => {
@@ -96,46 +96,38 @@ describe('QuizPage Component with Regular Data', () => {
       await userEvent.click(firstAnswerOption);
     });
 
-    const nextButton = screen.getByRole('button', { name: "Next Question" });
+    const nextButton = screen.getByRole('button', { name: /Next Question/i });
     await act(async () => {
       await userEvent.click(nextButton);
     });
 
     expect(screen.getByText(`${secondQuestion.id}. ${secondQuestion.questionText}`)).toBeInTheDocument();
-    expect(screen.getByText(`Question 2 of ${mockQuizDataRegular.length}`)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: "Next Question" })).toBeDisabled();
+    expect(screen.getByText(`Question ${2} of ${mockQuizDataRegular.length}`)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Next Question/i })).toBeDisabled();
   });
 
   it('completes the quiz and shows results', async () => {
     render(<QuizPage />);
-    let calculatedScore = 0;
     for (let i = 0; i < mockQuizDataRegular.length; i++) {
       const question = mockQuizDataRegular[i];
       const answerOptionText = question.options[0]; // Always pick the first option
-      if (answerOptionText === question.correctAnswer) {
-        calculatedScore++;
-      }
+
       const answerOption = await screen.findByRole('button', { name: answerOptionText });
       await act(async () => {
          await userEvent.click(answerOption);
       });
 
-      const nextButtonText = i === mockQuizDataRegular.length - 1 ? "Show Results" : "Next Question";
+      const nextButtonText = i === mockQuizDataRegular.length - 1 ? /Show Results/i : /Next Question/i;
       const nextButton = await screen.findByRole('button', { name: nextButtonText });
       await act(async () => {
         await userEvent.click(nextButton);
       });
     }
 
-    expect(screen.getByText("Quiz Completed!")).toBeInTheDocument();
-    // Recalculate expected score based on the fixed strategy of picking the first option
-    // Q1: options[0] ("Style Query Language") is NOT correctAnswer ("Structured Query Language") -> 0
-    // Q2: options[0] ("GET") is NOT correctAnswer ("SELECT") -> 0
-    // Q3: options[0] ("Sorts results") is NOT correctAnswer ("Filters records") -> 0
-    // So, expectedScore is 0.
-    const expectedScore = 0;
+    expect(screen.getByText(/Quiz Completed!/i)).toBeInTheDocument();
+    const expectedScore = 0; // Based on previous logic
     expect(screen.getByText(`You scored ${expectedScore} out of ${mockQuizDataRegular.length}.`)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: "Restart Quiz" })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Restart Quiz/i })).toBeInTheDocument();
   });
 
   it('restarts the quiz', async () => {
@@ -145,21 +137,21 @@ describe('QuizPage Component with Regular Data', () => {
        await act(async () => {
         await userEvent.click(answerOption);
       });
-      const nextButtonText = i === mockQuizDataRegular.length - 1 ? "Show Results" : "Next Question";
+      const nextButtonText = i === mockQuizDataRegular.length - 1 ? /Show Results/i : /Next Question/i;
       const nextButton = await screen.findByRole('button', { name: nextButtonText });
       await act(async () => {
         await userEvent.click(nextButton);
       });
     }
 
-    const restartButton = screen.getByRole('button', { name: "Restart Quiz" });
+    const restartButton = screen.getByRole('button', { name: /Restart Quiz/i });
     await act(async () => {
       await userEvent.click(restartButton);
     });
 
     const firstQuestion = mockQuizDataRegular[0];
     expect(screen.getByText(`${firstQuestion.id}. ${firstQuestion.questionText}`)).toBeInTheDocument();
-    expect(screen.getByText(`Question 1 of ${mockQuizDataRegular.length}`)).toBeInTheDocument();
+    expect(screen.getByText(`Question ${1} of ${mockQuizDataRegular.length}`)).toBeInTheDocument();
     expect(screen.getByText("Score: 0")).toBeInTheDocument();
   });
 
@@ -177,7 +169,7 @@ describe('QuizPage Component with Regular Data', () => {
     await act(async () => {
       await userEvent.click(firstAnswerOption);
     });
-    const nextButton = screen.getByRole('button', { name: "Next Question" });
+    const nextButton = screen.getByRole('button', { name: /Next Question/i });
     await act(async () => {
       await userEvent.click(nextButton);
     });
@@ -203,6 +195,6 @@ describe('QuizPage Component - Empty Quiz Data', () => {
 
   it('handles empty quizQuestions.json gracefully', () => {
     render(<QuizPageWithEmptyData />);
-    expect(screen.getByText("No quiz questions available.")).toBeInTheDocument();
+    expect(screen.getByText(/No quiz questions available./i)).toBeInTheDocument();
   });
 });

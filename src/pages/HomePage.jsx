@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 import initSqlJs from "sql.js";
 import tips from "../data/sqlTips.json";
 import SqlEditor from "../components/SqlEditor"; // Import the SqlEditor component
 import { sublime } from "@uiw/codemirror-theme-sublime";
 
 export default function HomePage({ darkMode }) {
+  const { t } = useTranslation(); // Initialize useTranslation
   const [db, setDb] = useState(null);
   const [query, setQuery] = useState("SELECT * FROM users;");
   const [currentTip, setCurrentTip] = useState("");
@@ -48,14 +50,14 @@ export default function HomePage({ darkMode }) {
 
   const runQuery = () => {
     if (!db) {
-      alert("Database not yet loaded. Please wait.");
+      alert(t('databaseNotLoaded'));
       return;
     }
     try {
       const res = db.exec(query);
       setResults(res);
     } catch (e) {
-      alert("Error: " + e.message);
+      alert(t('errorExecutingQuery', { message: e.message }));
       setResults([]); // Clear results on error
     }
   };
@@ -76,7 +78,7 @@ export default function HomePage({ darkMode }) {
         className="mt-4 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow disabled:opacity-50"
         disabled={!db}
       >
-        ▶️ Run
+        {t('runQuery')}
       </button>
 
       <div className="mt-8">
@@ -106,13 +108,13 @@ export default function HomePage({ darkMode }) {
             </table>
           </div>
         )) : (
-          <p className="text-gray-500 dark:text-gray-400">💡 Enter an SQL query and click "Run" to see results.</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('enterQueryPrompt')}</p>
         )}
       </div>
 
       {/* Tip Section */}
       <div className="mt-8 mb-6 p-4 bg-blue-100 dark:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded-lg">
-        <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 SQL Tip:</h3>
+        <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">{t('sqlTip')}</h3>
         <p className="text-blue-700 dark:text-blue-300">{currentTip}</p>
       </div>
     </div>

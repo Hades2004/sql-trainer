@@ -14,9 +14,18 @@ describe('Navbar Component', () => {
     );
 
     // Check for brand text
-    expect(screen.getByText(/SQL Trainer/i)).toBeInTheDocument();
-    expect(screen.getByText(/🧪/)).toBeInTheDocument();
+    expect(screen.getByText(/🧪 SQL Trainer/i)).toBeInTheDocument();
 
+    // Check for language switcher button (initial state: English)
+    const langButton = screen.getByRole('button', {
+      name: (accessibleName, element) => {
+        const hasFlag = element.querySelector('span[role="img"]')?.textContent === '🇬🇧';
+        const hasText = accessibleName.includes('English'); // Text node "English"
+        // The accessible name might be a combination like "English flag English"
+        return hasFlag && hasText;
+      }
+    });
+    expect(langButton).toBeInTheDocument();
 
     // Check for dark mode toggle button (initial state: Light mode, so button shows "Dark")
     expect(screen.getByRole('button', { name: /🌙 Dark/i })).toBeInTheDocument();
