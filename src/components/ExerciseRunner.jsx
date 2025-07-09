@@ -63,7 +63,7 @@ export default function ExerciseRunner({ exerciseDetail, darkMode }) {
       console.error("Failed to load or initialize SQL.js:", err);
        setError(t('errorInitializingDB', { message: err.message }));
     }
-   }, [schema, sampleDataSetup, correctQuery, t]);
+   }, [schema, sampleDataSetup, correctQuery]); // Removed t from dependencies
 
   useEffect(() => {
     initializeDb();

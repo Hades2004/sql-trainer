@@ -184,7 +184,7 @@ describe('ExerciseRunner Component', () => {
       await userEvent.type(editor, "SELECT id, name FROM users;");
     });
 
-    const runButton = screen.getByRole('button', { name: /Run SQL/i });
+    const runButton = screen.getByRole('button', { name: /▶️ Run SQL/i });
     await act(async () => {
       await userEvent.click(runButton);
     });
@@ -217,7 +217,7 @@ describe('ExerciseRunner Component', () => {
       await userEvent.type(editor, incorrectUserQuery);
     });
 
-    const runButton = screen.getByRole('button', { name: /Run SQL/i });
+    const runButton = screen.getByRole('button', { name: /▶️ Run SQL/i });
      await act(async () => {
       await userEvent.click(runButton);
     });
@@ -232,9 +232,10 @@ describe('ExerciseRunner Component', () => {
 
   it('displays error message if query execution fails', async () => {
     const errorQuery = "SELECT error;";
+    const errorMessage = "Syntax error near 'error'";
     mockDbExec.mockImplementation(query => {
       if (query === mockExerciseDetail.correctQuery) return correctQueryResults;
-      if (query === errorQuery) throw new Error("Syntax error near 'error'");
+      if (query === errorQuery) throw new Error(errorMessage);
       return createMockResults([],[]);
     });
 
@@ -247,13 +248,13 @@ describe('ExerciseRunner Component', () => {
       await userEvent.type(editor, errorQuery);
     });
 
-    const runButton = screen.getByRole('button', { name: /Run SQL/i });
+    const runButton = screen.getByRole('button', { name: /▶️ Run SQL/i });
     await act(async () => {
       await userEvent.click(runButton);
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Error executing query: Syntax error near 'error'/i)).toBeInTheDocument();
+      expect(screen.getByText(`Error: ${errorMessage}`)).toBeInTheDocument();
     });
   });
 
