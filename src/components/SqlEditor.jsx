@@ -1,4 +1,3 @@
-import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { sql } from '@codemirror/lang-sql';
 import { keymap, EditorView } from '@codemirror/view';

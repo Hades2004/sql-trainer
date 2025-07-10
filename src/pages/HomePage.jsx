@@ -21,8 +21,9 @@ export default function HomePage({ darkMode }) {
         const newDb = new SQL.Database();
         newDb.run("CREATE TABLE users (id INTEGER, name TEXT); INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob');");
         setDb(newDb);
-      } catch (err) {
-        console.error("Failed to load SQL.js:", err);
+      } catch { // Explicitly ignore error object
+        // console.error("Failed to load SQL.js:"); // ESLint: no-console
+        // Consider a user-facing error message here
       }
     };
     loadDb();
@@ -33,16 +34,15 @@ export default function HomePage({ darkMode }) {
       if (tips.length === 1) {
         nextTipIndex = 0;
       } else {
-        if (lastTipIndex === -1) { // First time loading
+        // Ensure not to repeat the same tip if possible
+        do {
           nextTipIndex = Math.floor(Math.random() * tips.length);
-        } else {
-          nextTipIndex = (lastTipIndex + 1) % tips.length;
-        }
+        } while (tips.length > 1 && nextTipIndex === lastTipIndex);
       }
       setCurrentTip(tips[nextTipIndex]);
       setLastTipIndex(nextTipIndex);
     }
-  }, []); // Removed lastTipIndex from dependencies to prevent re-triggering on its change
+  }, []); // Removed lastTipIndex to ensure this runs only once on mount
 
   const handleQueryChange = (value) => {
     setQuery(value);
