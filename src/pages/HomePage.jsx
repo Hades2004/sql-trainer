@@ -42,7 +42,7 @@ export default function HomePage({ darkMode }) {
       setCurrentTip(tips[nextTipIndex]);
       setLastTipIndex(nextTipIndex);
     }
-  }, [lastTipIndex]);
+  }, []);
 
   const handleQueryChange = (value) => {
     setQuery(value);
