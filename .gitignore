@@ -48,3 +48,6 @@ vite.config.ts.timestamp-*
 
 # gh-pages cache or temp files (optional)
 .gh-pages-cache/
+
+# Coverage directory
+/coverage/
