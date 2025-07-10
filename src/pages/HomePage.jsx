@@ -42,7 +42,7 @@ export default function HomePage({ darkMode }) {
       setCurrentTip(tips[nextTipIndex]);
       setLastTipIndex(nextTipIndex);
     }
-  }, [lastTipIndex]); // Added lastTipIndex as a dependency, logic updated to handle it
+  }, []); // Removed lastTipIndex to ensure this runs only once on mount
 
   const handleQueryChange = (value) => {
     setQuery(value);
