@@ -176,13 +176,13 @@ export default function Navbar({ darkMode, setDarkMode }) {
                       <span
                         className='mr-2'
                         role='img'
-                         // eslint-disable-next-line security/detect-object-injection
+                        // eslint-disable-next-line security/detect-object-injection
                         aria-label={`${languages[lng].nativeName} flag`}
                       >
-                         {/* eslint-disable-next-line security/detect-object-injection */}
+                        {/* eslint-disable-next-line security/detect-object-injection */}
                         {languages[lng].flag}
                       </span>
-                       {/* eslint-disable-next-line security/detect-object-injection */}
+                      {/* eslint-disable-next-line security/detect-object-injection */}
                       {languages[lng].nativeName}
                     </button>
                   ))}
