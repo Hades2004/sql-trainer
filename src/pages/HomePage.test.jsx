@@ -208,11 +208,11 @@ describe('HomePage Component', () => {
 
     render(<HomePage darkMode={false} />);
 
-    // The button should be initially disabled, but if we force it or test timing:
-    const runQueryButton = screen.getByRole('button', { name: 'Run Query' });
-    // Manually enable if needed for test logic, or ensure it's enabled if db load fails somehow
-    // For this test, we assume it might be clickable due to some race or state.
-    // However, the component correctly disables it, so this path is hard to test without altering component logic.
+    // const runQueryButton = screen.getByRole('button', { name: 'Run Query' }); // Removed unused variable
+    // The button should be initially disabled. This test case primarily verifies
+    // that the initial state (before DB load) shows the correct prompt,
+    // as directly testing a click on a disabled button or forcing the alert
+    // without specific setup is less about typical user interaction.
     // Let's assume the button *is* clicked while db is null.
     // This requires a way to bypass the disabled state or test the internal `runQuery` function directly.
 

@@ -16,6 +16,8 @@ export default function HomePage({ darkMode }) {
   // Function to select an initial tip, ensuring it runs only once.
   const getInitialTipState = () => {
     if (tips.length > 0) {
+      // Using Math.random for non-cryptographic purposes (selecting a random tip) is acceptable here.
+      // eslint-disable-next-line sonarjs/pseudo-random
       const initialTipIndex = Math.floor(Math.random() * tips.length);
       return {
         // eslint-disable-next-line security/detect-object-injection
@@ -27,7 +29,7 @@ export default function HomePage({ darkMode }) {
   };
 
   // Initialize tip state using the function so it's computed once.
-  const [tipState, _setTipState] = useState(getInitialTipState);
+  const [tipState] = useState(getInitialTipState); // Removed _setTipState
   const currentTip = tipState.currentTip;
   // lastTipIndex is implicitly managed by tipState, if needed elsewhere, extract from tipState.
   // For now, setLastTipIndex is not directly called to change tips after initial load.

@@ -1,15 +1,16 @@
-import globals from 'globals'; // We'll still need this for 'jest'
-import js from '@eslint/js';
-import pluginReact from 'eslint-plugin-react';
-import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
-import pluginImport from 'eslint-plugin-import';
-import pluginSecurity from 'eslint-plugin-security';
 import babelParser from '@babel/eslint-parser';
+import js from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
+import pluginImport from 'eslint-plugin-import';
+import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginSecurity from 'eslint-plugin-security';
+import pluginSonarJs from 'eslint-plugin-sonarjs'; // Added SonarJS
+import globals from 'globals'; // We'll still need this for 'jest'
 
 export default [
-  // Base ESLint recommended rules (includes common ECMAScript globals like es2021)
+  // Base ESLint recommended rules
   js.configs.recommended,
 
   // Security plugin configuration
@@ -30,7 +31,7 @@ export default [
     rules: {
       ...pluginImport.configs.recommended.rules,
       'import/order': [
-        'error', // Changed from 'warn' to 'error'
+        'error',
         {
           groups: [
             'builtin',
@@ -46,8 +47,8 @@ export default [
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
-      'import/prefer-default-export': 'off', // Prefer named exports
-      'import/no-unresolved': 'off', // Turning off for now, can be noisy with some setups
+      'import/prefer-default-export': 'off',
+      'import/no-unresolved': 'off',
       'import/named': 'error',
       'import/namespace': 'error',
       'import/default': 'error',
@@ -79,16 +80,13 @@ export default [
         },
       },
       globals: {
-        // Explicitly add common browser globals
         window: 'readonly',
         document: 'readonly',
         navigator: 'readonly',
         fetch: 'readonly',
         console: 'readonly',
-        localStorage: 'readonly', // Added
-        alert: 'readonly', // Added
-        // Node.js globals (like process) can be added specifically for files that need them
-        // or if the project uses Node.js features in client-side bundles (less common for 'process' itself)
+        localStorage: 'readonly',
+        alert: 'readonly',
       },
     },
     settings: {
@@ -98,14 +96,20 @@ export default [
     },
   },
 
-  // Configuration for files that might use Node.js globals like i18n.js
+  // Configuration for files that might use Node.js globals
   {
-    files: ['src/i18n.js', '*.config.js', 'vite.config.js'], // Add other config files if necessary
+    files: ['src/i18n.js', '*.config.js', 'vite.config.js'],
     languageOptions: {
       globals: {
-        process: 'readonly', // Added process here
-        ...globals.node, // Add other common Node.js globals for these files
+        process: 'readonly',
+        ...globals.node,
       },
+    },
+    rules: {
+      'no-unused-vars': [
+        'warn',
+        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+      ],
     },
   },
 
@@ -130,9 +134,8 @@ export default [
       ...(pluginJsxA11y.configs.recommended
         ? pluginJsxA11y.configs.recommended.rules
         : {}),
-
       'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'error', // Changed from 'off' to 'error'
+      'react/prop-types': 'error',
       'jsx-a11y/anchor-is-valid': 'warn',
       'no-unused-vars': [
         'warn',
@@ -141,6 +144,22 @@ export default [
       'no-console': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+    },
+  },
+
+  // SonarJS plugin configuration
+  {
+    files: ['src/**/*.{js,jsx}'], // Apply to main source files
+    plugins: {
+      sonarjs: pluginSonarJs,
+    },
+    rules: {
+      ...pluginSonarJs.configs.recommended.rules,
+      'sonarjs/prefer-single-boolean-return': 'off', // Disabled globally
+      // Example: Adjust cognitive complexity threshold if default (15) is too low/high
+      // 'sonarjs/cognitive-complexity': ['warn', 20],
+      // Example: Disable a rule if not desired
+      // 'sonarjs/no-duplicate-string': 'off',
     },
   },
 
@@ -153,8 +172,10 @@ export default [
       },
     },
     rules: {
-      'no-unused-vars': 'off',
+      'no-unused-vars': 'off', // Often prefer to allow unused vars in tests
     },
   },
-  prettierConfig, // Add prettierConfig as the last element
+
+  // Prettier config must be last
+  prettierConfig,
 ];
