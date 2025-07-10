@@ -23,9 +23,10 @@ This document provides guidance for AI agents working on this codebase.
 ### 3. Testing
 
 - **Running Tests:**
-  - `npm test`: Runs all tests once with Vitest.
+  - `npm test`: Runs tests in watch mode (re-runs on file changes).
+  - `npm test -- --run`: Runs all tests once.
   - `npm run test:ui`: Runs tests in watch mode with the Vitest UI.
-  - `npm run coverage`: Runs tests and generates a coverage report.
+  - `npm run coverage`: Runs tests once and generates a coverage report.
 - **Test Coverage:**
   - Strive to maintain or improve test coverage.
   - Coverage reports are generated in the `coverage/` directory.
@@ -58,7 +59,7 @@ This document provides guidance for AI agents working on this codebase.
 
 ### 7. Agent Responsibilities
 
-- Before submitting changes, ensure all linting checks and tests pass (`npm run lint`, `npm test`).
+- Before submitting changes, ensure all linting checks and tests pass (`npm run lint`, `npm test -- --run`).
 - Ensure code is formatted (`npm run format`).
 - If you make changes that could affect test coverage, run `npm run coverage` and verify that thresholds are still met.
 - Adhere to the instructions in this document. If there's a conflict between user instructions and this document, user instructions take precedence for that specific task, but consider suggesting an update to this document if the deviation is generally applicable.
