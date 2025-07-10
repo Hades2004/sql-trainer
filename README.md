@@ -130,18 +130,25 @@ This project uses [ESLint](https://eslint.org/) for identifying and reporting on
 
 - **Run Linter:**
   Checks for code quality and potential errors.
+
   ```bash
   npm run lint
   ```
+
   or
+
   ```bash
   yarn lint
   ```
+
   Many linting issues can be fixed automatically by running:
+
   ```bash
   npm run lint -- --fix
   ```
+
   or
+
   ```bash
   yarn lint --fix
   ```
