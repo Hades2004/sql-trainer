@@ -18,6 +18,7 @@ vi.mock('react-i18next', async (importOriginal) => {
     'runSQL': '▶️ Run SQL',
     'errorLabel': 'Error:',
     'errorExecutingQuery': 'Error: {{message}}',
+    'errorInitializingDB': 'Error initializing DB: {{message}}', // Added for ExerciseRunner
     'dbNotLoaded': 'Database not yet loaded. Please wait.',
     'feedbackCorrectTitle': '✅ Correct!',
     'feedbackIncorrectTitle': '🤔 Feedback:',
@@ -28,6 +29,9 @@ vi.mock('react-i18next', async (importOriginal) => {
     'queryResults': 'Query Results',
     'noResultsToDisplay': 'No results to display. Run a query or check for errors.',
     'queryReturnedNoRows': 'Query executed successfully, but returned no rows.',
+    'exerciseTask': 'Task', // Added for ExerciseRunner
+    'schema': 'Schema', // Added for ExerciseRunner
+    'yourSQLQuery': 'Your SQL Query', // Added for ExerciseRunner
     'questionOutOf': 'Question {{current}} of {{total}}',
     'scoreLabel': 'Score: {{score}}',
     'correctExclamation': '🎉 Correct!',
@@ -42,27 +46,29 @@ vi.mock('react-i18next', async (importOriginal) => {
     // Add other keys used directly or via interpolation in tests here
   };
 
+  const stableMockT = (key, options) => {
+    let translation = mockTranslations[key] || key;
+    if (options && mockTranslations[key]) {
+      Object.keys(options).forEach((optKey) => {
+        const regex = new RegExp(`{{${optKey}}}`, 'g');
+        translation = translation.replace(regex, options[optKey]);
+      });
+    }
+    return translation;
+  };
+
+  const stableMockI18n = {
+    changeLanguage: () => new Promise(() => {}),
+    resolvedLanguage: 'en',
+    language: 'en',
+    isInitialized: true,
+  };
+
   return {
     ...original,
     useTranslation: () => ({
-      t: (key, options) => {
-        let translation = mockTranslations[key] || key; // Lookup the key
-        if (options && (mockTranslations[key])) { // Only interpolate if key was found and options exist
-          Object.keys(options).forEach((optKey) => {
-            // A more robust replacement that handles multiple occurrences
-            const regex = new RegExp(`{{${optKey}}}`, 'g');
-            translation = translation.replace(regex, options[optKey]);
-          });
-        }
-        return translation;
-      },
-      i18n: {
-        changeLanguage: () => new Promise(() => {}),
-        resolvedLanguage: 'en',
-        language: 'en',
-        isInitialized: true,
-        // Add any other i18n properties or methods your components might use
-      },
+      t: stableMockT,
+      i18n: stableMockI18n,
     }),
     // Trans: ({ i18nKey }) => i18nKey, // Mock Trans if used
   };
