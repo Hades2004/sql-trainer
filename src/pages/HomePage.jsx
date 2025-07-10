@@ -10,9 +10,26 @@ export default function HomePage({ darkMode }) {
   const { t } = useTranslation(); // Initialize useTranslation
   const [db, setDb] = useState(null);
   const [query, setQuery] = useState('SELECT * FROM users;');
-  const [currentTip, setCurrentTip] = useState('');
-  const [lastTipIndex, setLastTipIndex] = useState(-1); // Added to store the last tip index
   const [results, setResults] = useState([]);
+
+  // Function to select an initial tip, ensuring it runs only once.
+  const getInitialTipState = () => {
+    if (tips.length > 0) {
+      const initialTipIndex = Math.floor(Math.random() * tips.length);
+      return {
+        currentTip: tips[initialTipIndex],
+        lastTipIndex: initialTipIndex,
+      };
+    }
+    return { currentTip: '', lastTipIndex: -1 };
+  };
+
+  // Initialize tip state using the function so it's computed once.
+  const [tipState, _setTipState] = useState(getInitialTipState);
+  const currentTip = tipState.currentTip;
+  // lastTipIndex is implicitly managed by tipState, if needed elsewhere, extract from tipState.
+  // For now, setLastTipIndex is not directly called to change tips after initial load.
+
   // Dark mode state is kept in App.jsx to be shared across pages
 
   useEffect(() => {
@@ -33,22 +50,8 @@ export default function HomePage({ darkMode }) {
       }
     };
     loadDb();
-
-    // Select a tip, ensuring it's not the same as the last one if possible
-    if (tips.length > 0) {
-      let nextTipIndex;
-      if (tips.length === 1) {
-        nextTipIndex = 0;
-      } else {
-        // Ensure not to repeat the same tip if possible
-        do {
-          nextTipIndex = Math.floor(Math.random() * tips.length);
-        } while (tips.length > 1 && nextTipIndex === lastTipIndex); // lastTipIndex is -1 on first run
-      }
-      setCurrentTip(tips[nextTipIndex]);
-      setLastTipIndex(nextTipIndex); // This will schedule a re-render but the effect won't re-run due to other dependencies
-    }
-  }, [lastTipIndex]); // Removed tips from dependency array
+    // Tip selection is now handled by useState initializer, so it's removed from here.
+  }, []); // Empty dependency array: runs only once on mount.
 
   const handleQueryChange = (value) => {
     setQuery(value);
