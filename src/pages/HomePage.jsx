@@ -42,7 +42,7 @@ export default function HomePage({ darkMode }) {
       setCurrentTip(tips[nextTipIndex]);
       setLastTipIndex(nextTipIndex);
     }
-  }, []); // Removed lastTipIndex to ensure this runs only once on mount
+  }, []);
 
   const handleQueryChange = (value) => {
     setQuery(value);
