@@ -27,12 +27,7 @@
     "id": 3,
     "questionText": "Which keyword is used to sort the result-set?",
     "sqlQuery": "SELECT Name, Age FROM Employees --- BY Age DESC;",
-    "options": [
-      "SORT BY",
-      "ORDER BY",
-      "GROUP BY",
-      "ARRANGE BY"
-    ],
+    "options": ["SORT BY", "ORDER BY", "GROUP BY", "ARRANGE BY"],
     "correctAnswer": "ORDER BY"
   }
 ]

@@ -1,9 +1,11 @@
 import { useParams, Link } from 'react-router-dom'; // Added Link
+
 import ExerciseRunner from '../components/ExerciseRunner';
 
 const exerciseDetailsMap = {
-  "1": {
-    taskDescription: "Retrieve the usernames and email addresses of all users who registered on or after '2024-02-15' (inclusive) and are marked as 'active'.\n\nReference date for 'today' is '2024-03-15'. Your query should select users registered in the 30 days leading up to this reference date.\n\nThe results should be ordered by username in ascending order.",
+  1: {
+    taskDescription:
+      "Retrieve the usernames and email addresses of all users who registered on or after '2024-02-15' (inclusive) and are marked as 'active'.\n\nReference date for 'today' is '2024-03-15'. Your query should select users registered in the 30 days leading up to this reference date.\n\nThe results should be ordered by username in ascending order.",
     schema: `CREATE TABLE users (
       user_id INT PRIMARY KEY,
       username VARCHAR(255) NOT NULL,
@@ -20,11 +22,13 @@ const exerciseDetailsMap = {
   INSERT INTO users VALUES (6, 'Fiona Apple', 'fiona@example.com', '2024-02-10', 'active');
   INSERT INTO users VALUES (7, 'George Harrison', 'george@example.com', '2024-02-15', 'active');
     `,
-    correctQuery: "SELECT username, email FROM users WHERE date(registration_date) >= date('2024-02-15') AND status = 'active' ORDER BY username;",
-    initialQuery: "SELECT username, email FROM users WHERE status = 'active';"
+    correctQuery:
+      "SELECT username, email FROM users WHERE date(registration_date) >= date('2024-02-15') AND status = 'active' ORDER BY username;",
+    initialQuery: "SELECT username, email FROM users WHERE status = 'active';",
   },
-  "2": {
-    taskDescription: "Select the username and registration_date for all users who are 'inactive' and registered before '2024-01-01'.\n\nThe results should be ordered by username in ascending order.",
+  2: {
+    taskDescription:
+      "Select the username and registration_date for all users who are 'inactive' and registered before '2024-01-01'.\n\nThe results should be ordered by username in ascending order.",
     schema: `CREATE TABLE users (
       user_id INT PRIMARY KEY,
       username VARCHAR(255) NOT NULL,
@@ -40,11 +44,14 @@ const exerciseDetailsMap = {
   INSERT INTO users VALUES (5, 'Eve Polastri', 'eve@example.com', '2023-11-01', 'inactive');
   INSERT INTO users VALUES (6, 'Frank Castle', 'frank@example.com', '2024-01-15', 'inactive');
     `,
-    correctQuery: "SELECT username, registration_date FROM users WHERE status = 'inactive' AND date(registration_date) < date('2024-01-01') ORDER BY username;",
-    initialQuery: "SELECT username, registration_date FROM users WHERE status = 'inactive';"
+    correctQuery:
+      "SELECT username, registration_date FROM users WHERE status = 'inactive' AND date(registration_date) < date('2024-01-01') ORDER BY username;",
+    initialQuery:
+      "SELECT username, registration_date FROM users WHERE status = 'inactive';",
   },
-  "3": {
-    taskDescription: "Retrieve all columns for users. Sort the results first by 'status' in ascending order (active, inactive, pending), and then by 'registration_date' in descending order (newest first) for users with the same status.",
+  3: {
+    taskDescription:
+      "Retrieve all columns for users. Sort the results first by 'status' in ascending order (active, inactive, pending), and then by 'registration_date' in descending order (newest first) for users with the same status.",
     schema: `CREATE TABLE users (
       user_id INT PRIMARY KEY,
       username VARCHAR(255) NOT NULL,
@@ -60,11 +67,13 @@ const exerciseDetailsMap = {
   INSERT INTO users VALUES (5, 'Steve Rogers', 'steve@example.com', '2023-05-05', 'pending');
   INSERT INTO users VALUES (6, 'Natasha Romanoff', 'natasha@example.com', '2024-03-01', 'active');
     `,
-    correctQuery: "SELECT user_id, username, email, registration_date, status FROM users ORDER BY status ASC, registration_date DESC;",
-    initialQuery: "SELECT * FROM users ORDER BY status;"
+    correctQuery:
+      'SELECT user_id, username, email, registration_date, status FROM users ORDER BY status ASC, registration_date DESC;',
+    initialQuery: 'SELECT * FROM users ORDER BY status;',
   },
-  "4": {
-     taskDescription: "List the names of customers and the product names of items they have ordered. Only include orders that have been 'Shipped'.\n\nThe results should be ordered by customer_name in ascending order, then by product_name in ascending order.",
+  4: {
+    taskDescription:
+      "List the names of customers and the product names of items they have ordered. Only include orders that have been 'Shipped'.\n\nThe results should be ordered by customer_name in ascending order, then by product_name in ascending order.",
     schema: `
   CREATE TABLE customers (
       customer_id INT PRIMARY KEY,
@@ -100,9 +109,11 @@ const exerciseDetailsMap = {
   INSERT INTO orders VALUES (5, 2, 101, '2024-02-10', 'Shipped');
   INSERT INTO orders VALUES (6, 1, 102, '2024-03-01', 'Delivered'); -- Should not be included as per "Shipped" status
     `,
-    correctQuery: "SELECT c.customer_name, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN products p ON o.product_id = p.product_id WHERE o.status = 'Shipped' ORDER BY c.customer_name, p.product_name;",
-    initialQuery: "SELECT c.customer_name, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN products p ON o.product_id = p.product_id;"
-  }
+    correctQuery:
+      "SELECT c.customer_name, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN products p ON o.product_id = p.product_id WHERE o.status = 'Shipped' ORDER BY c.customer_name, p.product_name;",
+    initialQuery:
+      'SELECT c.customer_name, p.product_name FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN products p ON o.product_id = p.product_id;',
+  },
 };
 
 export default function ExerciseDisplayPage({ darkMode }) {
@@ -111,12 +122,18 @@ export default function ExerciseDisplayPage({ darkMode }) {
 
   if (!exerciseDetail) {
     return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-red-600 dark:text-red-400">Exercise Not Found</h1>
-        <p className="text-gray-700 dark:text-gray-300 mt-2">
-          The exercise you are looking for does not exist or has not been implemented yet.
+      <div className='container mx-auto px-4 py-8 text-center'>
+        <h1 className='text-2xl font-bold text-red-600 dark:text-red-400'>
+          Exercise Not Found
+        </h1>
+        <p className='text-gray-700 dark:text-gray-300 mt-2'>
+          The exercise you are looking for does not exist or has not been
+          implemented yet.
         </p>
-        <Link to="/sql-trainer/exercises" className="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <Link
+          to='/sql-trainer/exercises'
+          className='mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+        >
           Back to Exercises
         </Link>
       </div>
@@ -124,8 +141,10 @@ export default function ExerciseDisplayPage({ darkMode }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">SQL Query Challenge: Exercise {exerciseId}</h1>
+    <div className='container mx-auto px-4 py-8'>
+      <h1 className='text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100'>
+        SQL Query Challenge: Exercise {exerciseId}
+      </h1>
       <ExerciseRunner exerciseDetail={exerciseDetail} darkMode={darkMode} />
     </div>
   );

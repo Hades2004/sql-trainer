@@ -20,7 +20,7 @@ permissions:
 # Stellt sicher, dass immer nur ein Deployment zur selben Zeit läuft.
 # Ältere, laufende Workflows für diesen Branch werden abgebrochen.
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 # Die einzelnen Jobs, die der Workflow ausführt
