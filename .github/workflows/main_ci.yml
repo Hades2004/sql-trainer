@@ -45,7 +45,7 @@ jobs:
 
       - name: Run linter
         run: npm run lint # Or yarn lint
-
+  
   build:
     name: Build Project
     runs-on: ubuntu-latest
