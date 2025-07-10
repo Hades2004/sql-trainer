@@ -15,6 +15,7 @@ export default function QuizPage() {
 
   // Memoize currentQuestion to avoid re-calculating on every render unless currentQuestionIndex changes
   const currentQuestion = React.useMemo(
+    // eslint-disable-next-line security/detect-object-injection
     () => quizQuestions[currentQuestionIndex],
     [currentQuestionIndex]
   );

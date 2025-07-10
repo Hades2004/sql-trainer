@@ -43,6 +43,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
         // ArrowUp
         currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
       }
+      // eslint-disable-next-line security/detect-object-injection
       items[currentIndex]?.focus();
     }
   };
@@ -67,6 +68,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
         // ArrowUp
         currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
       }
+      // eslint-disable-next-line security/detect-object-injection
       items[currentIndex]?.focus();
     }
   };
@@ -174,10 +176,13 @@ export default function Navbar({ darkMode, setDarkMode }) {
                       <span
                         className='mr-2'
                         role='img'
+                        // eslint-disable-next-line security/detect-object-injection
                         aria-label={`${languages[lng].nativeName} flag`}
                       >
+                        {/* eslint-disable-next-line security/detect-object-injection */}
                         {languages[lng].flag}
                       </span>
+                      {/* eslint-disable-next-line security/detect-object-injection */}
                       {languages[lng].nativeName}
                     </button>
                   ))}

@@ -4,12 +4,23 @@ import pluginReact from 'eslint-plugin-react';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginImport from 'eslint-plugin-import';
+import pluginSecurity from 'eslint-plugin-security';
 import babelParser from '@babel/eslint-parser';
 import prettierConfig from 'eslint-config-prettier';
 
 export default [
   // Base ESLint recommended rules (includes common ECMAScript globals like es2021)
   js.configs.recommended,
+
+  // Security plugin configuration
+  {
+    plugins: {
+      security: pluginSecurity,
+    },
+    rules: {
+      ...pluginSecurity.configs.recommended.rules,
+    },
+  },
 
   // Import plugin configuration
   {
@@ -19,7 +30,7 @@ export default [
     rules: {
       ...pluginImport.configs.recommended.rules,
       'import/order': [
-        'warn',
+        'error', // Changed from 'warn' to 'error'
         {
           groups: [
             'builtin',

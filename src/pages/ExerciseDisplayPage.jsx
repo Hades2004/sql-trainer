@@ -119,6 +119,7 @@ const exerciseDetailsMap = {
 
 export default function ExerciseDisplayPage({ darkMode }) {
   const { exerciseId } = useParams();
+  // eslint-disable-next-line security/detect-object-injection
   const exerciseDetail = exerciseDetailsMap[exerciseId];
 
   if (!exerciseDetail) {
