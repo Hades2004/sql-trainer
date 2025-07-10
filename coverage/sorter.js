@@ -82,15 +82,28 @@ var addSorting = (function() {
             data = {},
             i,
             val;
+
+        // Helper function to escape HTML meta-characters
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         for (i = 0; i < tableCols.length; i += 1) {
             colNode = tableCols[i];
             col = cols[i];
             val = colNode.getAttribute('data-value');
-            if (col.type === 'number') {
-                val = Number(val);
-            }
-            data[col.key] = val;
-        }
+           if (col.type === 'number') {
+               val = Number(val);
+           } else if (typeof val === 'string') {
+               val = escapeHTML(val);
+           }
+           data[col.key] = val;
+       }
         return data;
     }
     // loads all row data
