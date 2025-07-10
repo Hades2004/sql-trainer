@@ -39,42 +39,46 @@ vi.mock('@codemirror/view', async () => {
 });
 
 // Mock @uiw/react-codemirror
+// Define the mock component separately to use hooks correctly
+const MockCodeMirrorComponent = ({ value, onChange, extensions, theme, height, readOnly }) => {
+  const [internalValue, setInternalValue] = React.useState(value);
+
+  React.useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setInternalValue(newValue);
+    if (onChange) {
+      onChange(newValue, null); // Pass null for the viewUpdate, as the original does
+    }
+  };
+
+  let hasExecuteKeymap = false;
+  if (extensions && Array.isArray(extensions)) {
+    hasExecuteKeymap = extensions.some(ext =>
+      ext && ext._isPrecHighMock && ext.inner && ext.inner._isKeymapOfMock &&
+      Array.isArray(ext.inner.bindings) &&
+      ext.inner.bindings.some(binding => binding.key === "Shift-Enter")
+    );
+  }
+
+  return (
+    <div data-testid="mock-codemirror" style={{ height }} data-theme={theme?.constructor?.name} data-has-execute-keymap={String(hasExecuteKeymap)}>
+      <textarea
+        value={internalValue}
+        onChange={handleChange}
+        readOnly={readOnly}
+        data-testid="mock-editor-input"
+      />
+    </div>
+  );
+};
+
 vi.mock('@uiw/react-codemirror', () => ({
   __esModule: true,
-  default: ({ value, onChange, extensions, theme, height, readOnly }) => {
-    const [internalValue, setInternalValue] = React.useState(value);
-
-    React.useEffect(() => {
-      setInternalValue(value);
-    }, [value]);
-
-    const handleChange = (event) => {
-      setInternalValue(event.target.value);
-      if (onChange) {
-        onChange(event.target.value, null);
-      }
-    };
-
-    let hasExecuteKeymap = false;
-    if (extensions && Array.isArray(extensions)) {
-      hasExecuteKeymap = extensions.some(ext =>
-        ext && ext._isPrecHighMock && ext.inner && ext.inner._isKeymapOfMock &&
-        Array.isArray(ext.inner.bindings) &&
-        ext.inner.bindings.some(binding => binding.key === "Shift-Enter")
-      );
-    }
-
-    return (
-      <div data-testid="mock-codemirror" style={{ height }} data-theme={theme?.constructor?.name} data-has-execute-keymap={String(hasExecuteKeymap)}>
-        <textarea
-          value={internalValue}
-          onChange={handleChange}
-          readOnly={readOnly}
-          data-testid="mock-editor-input"
-        />
-      </div>
-    );
-  },
+  default: MockCodeMirrorComponent,
 }));
 
 describe('SqlEditor Component', () => {

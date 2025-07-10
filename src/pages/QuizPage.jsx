@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react'; // Removed useEffect
 import { useTranslation } from 'react-i18next';
 import quizQuestions from '../data/quizQuestions.json';
 

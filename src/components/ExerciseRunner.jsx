@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import initSqlJs from 'sql.js';
 import SqlEditor from './SqlEditor'; // Import the SqlEditor component
-import { oneDark } from '@codemirror/theme-one-dark';
-import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-import { materialDark } from '@uiw/codemirror-theme-material';
+// import { oneDark } from '@codemirror/theme-one-dark'; // Unused
+// import { vscodeDark } from '@uiw/codemirror-theme-vscode'; // Unused
+// import { materialDark } from '@uiw/codemirror-theme-material'; // Unused
 import { sublime } from '@uiw/codemirror-theme-sublime';
 
 
@@ -60,10 +60,10 @@ export default function ExerciseRunner({ exerciseDetail, darkMode }) {
       setCorrectResultsForComparison(correctRes);
 
     } catch (err) {
-      console.error("Failed to load or initialize SQL.js:", err);
-       setError(t('errorInitializingDB', { message: err.message }));
+      // console.error("Failed to load or initialize SQL.js:", err); // ESLint: no-console
+      setError(t('errorInitializingDB', { message: err.message }));
     }
-   }, [schema, sampleDataSetup, correctQuery]); // Removed t from dependencies
+  }, [schema, sampleDataSetup, correctQuery, t]); // Added t to dependencies
 
   useEffect(() => {
     initializeDb();

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Added Link
 import ExerciseRunner from '../components/ExerciseRunner';
 
 const exerciseDetailsMap = {
