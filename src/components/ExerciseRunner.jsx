@@ -6,7 +6,18 @@ import initSqlJs from 'sql.js';
 
 import SqlEditor from './SqlEditor';
 
+/**
+ * @typedef {import('sql.js').SqlJs.Result} SqlJsResult
+ * @typedef {import('i18next').TFunction} TFunction
+ */
+
 // --- compareResults Refactoring ---
+/**
+ * Compares the content of two simple arrays.
+ * @param {Array<any>} arr1 - The first array.
+ * @param {Array<any>} arr2 - The second array.
+ * @returns {boolean} True if arrays have the same content, false otherwise.
+ */
 const compareArrayContent = (arr1, arr2) => {
   if (arr1.length !== arr2.length) return false;
   for (let i = 0; i < arr1.length; i++) {
@@ -16,6 +27,12 @@ const compareArrayContent = (arr1, arr2) => {
   return true;
 };
 
+/**
+ * Compares two arrays of arrays (representing table values).
+ * @param {Array<Array<any>>} val1 - The first table data.
+ * @param {Array<Array<any>>} val2 - The second table data.
+ * @returns {boolean} True if table values are identical, false otherwise.
+ */
 const compareTableValues = (val1, val2) => {
   if (val1.length !== val2.length) return false;
   for (let i = 0; i < val1.length; i++) {
@@ -25,6 +42,13 @@ const compareTableValues = (val1, val2) => {
   return true;
 };
 
+/**
+ * Compares user's SQL query results with the correct results.
+ * Assumes results are in the format provided by sql.js.
+ * @param {SqlJsResult[] | undefined} userResult - The user's query result.
+ * @param {SqlJsResult[] | undefined} correctResult - The correct query result.
+ * @returns {boolean} True if results are considered equivalent, false otherwise.
+ */
 const compareResults = (userResult, correctResult) => {
   if (!userResult || !correctResult) return false;
   if (userResult.length === 0 && correctResult.length === 0) return true;
@@ -42,6 +66,13 @@ const compareResults = (userResult, correctResult) => {
 };
 // --- End compareResults Refactoring ---
 
+/**
+ * Determines the feedback message and correctness based on user results and correct results.
+ * @param {SqlJsResult[]} userResults - The results from the user's query.
+ * @param {SqlJsResult[] | null} correctComparisonResults - The pre-calculated correct results for comparison.
+ * @param {TFunction} tFunction - The translation function from i18next.
+ * @returns {{isCorrect: boolean, message: string}} An object containing a boolean indicating correctness and a feedback message.
+ */
 // sonarjs/prefer-single-boolean-return is now disabled globally in eslint.config.js
 const determineFeedbackLogic = (
   userResults,
@@ -74,6 +105,12 @@ const determineFeedbackLogic = (
   };
 };
 
+/**
+ * Renders a table displaying SQL query results.
+ * @param {object} props - The component's props.
+ * @param {SqlJsResult[]} props.results - An array of SQL result objects from sql.js.
+ * @returns {JSX.Element} A React element representing the result tables.
+ */
 const QueryResultTable = ({ results }) => {
   return results.map((res, idx) => (
     <div key={idx} className='overflow-x-auto mb-6'>
@@ -123,6 +160,21 @@ QueryResultTable.propTypes = {
   ).isRequired,
 };
 
+/**
+ * ExerciseRunner component provides an environment to run SQL exercises.
+ * It initializes an in-memory SQL database, displays exercise details,
+ * allows users to input and run SQL queries, and provides feedback on their solutions.
+ *
+ * @param {object} props - The component's props.
+ * @param {object} props.exerciseDetail - An object containing the details of the exercise.
+ * @param {string} props.exerciseDetail.taskDescription - The description of the task.
+ * @param {string} props.exerciseDetail.schema - The SQL schema to set up the database.
+ * @param {string} props.exerciseDetail.sampleDataSetup - SQL statements to populate the database with sample data.
+ * @param {string} props.exerciseDetail.correctQuery - The correct SQL query for the exercise.
+ * @param {string} [props.exerciseDetail.initialQuery="SELECT 'your query here';"] - An optional initial query to populate the editor.
+ * @param {boolean} props.darkMode - Flag to indicate if dark mode is enabled, used for editor theming.
+ * @returns {JSX.Element} The ExerciseRunner component.
+ */
 export default function ExerciseRunner({ exerciseDetail, darkMode }) {
   const { t } = useTranslation();
   const {

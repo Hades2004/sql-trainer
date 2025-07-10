@@ -3,6 +3,24 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
+/**
+ * @file Configures and initializes i18next for internationalization.
+ *
+ * This setup includes:
+ * - `i18next-http-backend`: For loading translations from external files.
+ * - `i18next-browser-languagedetector`: For detecting user language.
+ * - `react-i18next`: For integrating i18next with React components.
+ *
+ * Key configurations:
+ * - `supportedLngs`: Specifies available languages ('en', 'de').
+ * - `fallbackLng`: Default language if detection fails or requested language is unavailable.
+ * - `debug`: Enables console logging for i18next in development mode.
+ * - `ns` and `defaultNS`: Defines translation namespaces.
+ * - `detection`: Configures language detection order and caching.
+ * - `backend.loadPath`: Specifies the path to translation JSON files.
+ * - `react.useSuspense`: Enables React Suspense for loading translations.
+ */
+
 // eslint-disable-next-line import/no-named-as-default-member
 i18n
   .use(Backend) // Use i18next-http-backend

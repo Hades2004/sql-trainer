@@ -5,6 +5,27 @@ import { keymap, EditorView } from '@codemirror/view';
 import CodeMirror from '@uiw/react-codemirror';
 import PropTypes from 'prop-types'; // Import PropTypes
 
+/**
+ * @typedef {import('@codemirror/state').Extension} CodeMirrorExtension
+ * @typedef {import('@uiw/react-codemirror').ReactCodeMirrorProps['theme']} CodeMirrorTheme
+ */
+
+/**
+ * A React component that wraps CodeMirror for SQL editing.
+ * It provides syntax highlighting for SQL, custom keymaps (Shift-Enter to execute),
+ * and integrates with a theme.
+ *
+ * @param {object} props - The component's props.
+ * @param {string} props.value - The current SQL query string.
+ * @param {(value: string, viewUpdate: import('@codemirror/view').ViewUpdate) => void} props.onChange - Callback function triggered when the editor content changes.
+ * @param {() => void} [props.onExecute] - Optional callback function triggered when Shift+Enter is pressed.
+ * @param {string} [props.height='200px'] - The height of the editor.
+ * @param {boolean} [props.readOnly=false] - Whether the editor is read-only.
+ * @param {CodeMirrorTheme} [props.theme='light'] - The CodeMirror theme to use (e.g., 'light', 'dark', or a theme object).
+ * @param {string} [props.'aria-label'] - ARIA label for accessibility.
+ * @param {string} [props.'aria-labelledby'] - ARIA labelledby for accessibility.
+ * @returns {JSX.Element} The SQL editor component.
+ */
 const SqlEditor = ({
   value,
   onChange,
