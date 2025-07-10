@@ -1,8 +1,9 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
+import { initReactI18next } from 'react-i18next';
 
+// eslint-disable-next-line import/no-named-as-default-member
 i18n
   .use(Backend) // Use i18next-http-backend
   .use(LanguageDetector)
@@ -14,7 +15,16 @@ i18n
     ns: ['translation'], // Define namespaces
     defaultNS: 'translation',
     detection: {
-      order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      order: [
+        'querystring',
+        'cookie',
+        'localStorage',
+        'sessionStorage',
+        'navigator',
+        'htmlTag',
+        'path',
+        'subdomain',
+      ],
       caches: ['cookie', 'localStorage'],
     },
     backend: {

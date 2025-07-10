@@ -1,9 +1,16 @@
-import React from 'react';
-import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  act,
+  fireEvent,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ExerciseRunner from './ExerciseRunner';
-import { vi } from 'vitest';
+import React from 'react';
 import originalInitSqlJs from 'sql.js'; // Import the actual default export
+import { vi } from 'vitest';
+
+import ExerciseRunner from './ExerciseRunner';
 
 // Helper to create mock SQL.js results
 const createMockResults = (columns, values) => [{ columns, values }];
@@ -18,7 +25,9 @@ const mockSqlJsDatabaseInstance = {
 const mockSqlJsDatabaseConstructor = vi.fn(() => mockSqlJsDatabaseInstance);
 
 vi.mock('sql.js', () => ({
-  default: vi.fn(() => Promise.resolve({ Database: mockSqlJsDatabaseConstructor })),
+  default: vi.fn(() =>
+    Promise.resolve({ Database: mockSqlJsDatabaseConstructor })
+  ),
 }));
 
 // Mock SqlEditor - basic version, can be enhanced if needed
@@ -27,7 +36,7 @@ vi.mock('./SqlEditor', () => ({
   default: ({ value, onChange, onExecute, theme }) => (
     <div>
       <textarea
-        data-testid="mock-sql-editor"
+        data-testid='mock-sql-editor'
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
@@ -36,29 +45,38 @@ vi.mock('./SqlEditor', () => ({
           }
         }}
       />
-      <div data-testid="mock-sql-editor-theme">{JSON.stringify(theme)}</div>
+      <div data-testid='mock-sql-editor-theme'>{JSON.stringify(theme)}</div>
     </div>
   ),
 }));
 
-
 const mockExerciseDetail = {
-  taskDescription: "Select all users.",
-  schema: "CREATE TABLE users (id INT, name TEXT);",
-  sampleDataSetup: "INSERT INTO users (id, name) VALUES (1, 'Alice'), (2, 'Bob');",
-  correctQuery: "SELECT id, name FROM users;",
-  initialQuery: "SELECT 'your query here';"
+  taskDescription: 'Select all users.',
+  schema: 'CREATE TABLE users (id INT, name TEXT);',
+  sampleDataSetup:
+    "INSERT INTO users (id, name) VALUES (1, 'Alice'), (2, 'Bob');",
+  correctQuery: 'SELECT id, name FROM users;',
+  initialQuery: "SELECT 'your query here';",
 };
 
-const correctQueryResults = createMockResults(['id', 'name'], [[1, 'Alice'], [2, 'Bob']]);
+const correctQueryResults = createMockResults(
+  ['id', 'name'],
+  [
+    [1, 'Alice'],
+    [2, 'Bob'],
+  ]
+);
 
 // A utility to wait for initialization to complete
 const waitForInitialization = async () => {
   await waitFor(() => expect(originalInitSqlJs).toHaveBeenCalledTimes(1));
-  await waitFor(() => expect(mockSqlJsDatabaseConstructor).toHaveBeenCalledTimes(1));
-  await waitFor(() => expect(mockDbExec).toHaveBeenCalledWith(mockExerciseDetail.correctQuery));
+  await waitFor(() =>
+    expect(mockSqlJsDatabaseConstructor).toHaveBeenCalledTimes(1)
+  );
+  await waitFor(() =>
+    expect(mockDbExec).toHaveBeenCalledWith(mockExerciseDetail.correctQuery)
+  );
 };
-
 
 describe('ExerciseRunner Component', () => {
   beforeEach(() => {
@@ -76,24 +94,38 @@ describe('ExerciseRunner Component', () => {
 
   describe('compareResults (internal helper - testing directly for clarity)', () => {
     const compare = (user, correct) => {
-        if (!user || !correct) return false;
-        if (user.length === 0 && correct.length === 0) return true;
-        if (user.length !== correct.length) return false;
-        const userRes = user[0];
-        const correctRes = correct[0];
-        if (!userRes || !correctRes) return false;
-        if (userRes.columns.length !== correctRes.columns.length) return false;
-        if (!userRes.columns.every((col, i) => col === correctRes.columns[i])) return false;
-        if (userRes.values.length !== correctRes.values.length) return false;
-        return userRes.values.every((row, i) =>
-            row.length === correctRes.values[i].length &&
-            row.every((cell, j) => cell === correctRes.values[i][j])
-        );
+      if (!user || !correct) return false;
+      if (user.length === 0 && correct.length === 0) return true;
+      if (user.length !== correct.length) return false;
+      const userRes = user[0];
+      const correctRes = correct[0];
+      if (!userRes || !correctRes) return false;
+      if (userRes.columns.length !== correctRes.columns.length) return false;
+      if (!userRes.columns.every((col, i) => col === correctRes.columns[i]))
+        return false;
+      if (userRes.values.length !== correctRes.values.length) return false;
+      return userRes.values.every(
+        (row, i) =>
+          row.length === correctRes.values[i].length &&
+          row.every((cell, j) => cell === correctRes.values[i][j])
+      );
     };
 
     it('returns true for identical results', () => {
-      const res1 = createMockResults(['a', 'b'], [[1, 'x'], [2, 'y']]);
-      const res2 = createMockResults(['a', 'b'], [[1, 'x'], [2, 'y']]);
+      const res1 = createMockResults(
+        ['a', 'b'],
+        [
+          [1, 'x'],
+          [2, 'y'],
+        ]
+      );
+      const res2 = createMockResults(
+        ['a', 'b'],
+        [
+          [1, 'x'],
+          [2, 'y'],
+        ]
+      );
       expect(compare(res1, res2)).toBe(true);
     });
 
@@ -120,20 +152,22 @@ describe('ExerciseRunner Component', () => {
     });
 
     it('returns true for two results with columns but no values', () => {
-        const res1 = createMockResults(['a', 'b'], []);
-        const res2 = createMockResults(['a', 'b'], []);
-        expect(compare(res1, res2)).toBe(true);
+      const res1 = createMockResults(['a', 'b'], []);
+      const res2 = createMockResults(['a', 'b'], []);
+      expect(compare(res1, res2)).toBe(true);
     });
 
     it('returns false if user result is empty but correct is not', () => {
-        const res1 = createMockResults(['a', 'b'], []);
-        const res2 = createMockResults(['a', 'b'], [[1, 'test']]);
-        expect(compare(res1, res2)).toBe(false);
+      const res1 = createMockResults(['a', 'b'], []);
+      const res2 = createMockResults(['a', 'b'], [[1, 'test']]);
+      expect(compare(res1, res2)).toBe(false);
     });
   });
 
   it('initializes database and pre-runs correct query on mount', async () => {
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
 
     // Use the waitForInitialization helper
     await waitForInitialization();
@@ -144,11 +178,15 @@ describe('ExerciseRunner Component', () => {
   });
 
   it('displays task description, schema, and initial query', async () => {
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
     // Wait for async effects from useEffect to settle before assertions
     await waitForInitialization();
 
-    expect(screen.getByText(mockExerciseDetail.taskDescription)).toBeInTheDocument();
+    expect(
+      screen.getByText(mockExerciseDetail.taskDescription)
+    ).toBeInTheDocument();
     expect(screen.getByText(mockExerciseDetail.schema)).toBeInTheDocument();
 
     const editor = screen.getByTestId('mock-sql-editor');
@@ -156,32 +194,36 @@ describe('ExerciseRunner Component', () => {
   });
 
   it('allows user to type in SqlEditor and updates query', async () => {
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
     await waitForInitialization();
     const editor = screen.getByTestId('mock-sql-editor');
 
     await act(async () => {
       await userEvent.clear(editor);
-      await userEvent.type(editor, "SELECT name FROM users;");
+      await userEvent.type(editor, 'SELECT name FROM users;');
     });
 
-    expect(editor.value).toBe("SELECT name FROM users;");
+    expect(editor.value).toBe('SELECT name FROM users;');
   });
 
   it('runs user query and displays "Correct" feedback for correct query', async () => {
-    mockDbExec.mockImplementation(query => {
+    mockDbExec.mockImplementation((query) => {
       if (query === mockExerciseDetail.correctQuery) return correctQueryResults;
-      if (query === "SELECT id, name FROM users;") return correctQueryResults;
-      return createMockResults([],[]);
+      if (query === 'SELECT id, name FROM users;') return correctQueryResults;
+      return createMockResults([], []);
     });
 
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
     await waitForInitialization();
 
     const editor = screen.getByTestId('mock-sql-editor');
     await act(async () => {
       await userEvent.clear(editor);
-      await userEvent.type(editor, "SELECT id, name FROM users;");
+      await userEvent.type(editor, 'SELECT id, name FROM users;');
     });
 
     const runButton = screen.getByRole('button', { name: /▶️ Run SQL/i });
@@ -190,7 +232,7 @@ describe('ExerciseRunner Component', () => {
     });
 
     await waitFor(() => {
-      expect(mockDbExec).toHaveBeenCalledWith("SELECT id, name FROM users;");
+      expect(mockDbExec).toHaveBeenCalledWith('SELECT id, name FROM users;');
       expect(screen.getByText(/Correct! Well done./i)).toBeInTheDocument();
     });
 
@@ -199,16 +241,18 @@ describe('ExerciseRunner Component', () => {
   });
 
   it('runs user query and displays "Incorrect" feedback for incorrect query', async () => {
-    const incorrectUserQuery = "SELECT name FROM users WHERE id = 1;";
+    const incorrectUserQuery = 'SELECT name FROM users WHERE id = 1;';
     const incorrectUserResults = createMockResults(['name'], [['Alice']]);
 
-    mockDbExec.mockImplementation(query => {
+    mockDbExec.mockImplementation((query) => {
       if (query === mockExerciseDetail.correctQuery) return correctQueryResults;
       if (query === incorrectUserQuery) return incorrectUserResults;
-      return createMockResults([],[]);
+      return createMockResults([], []);
     });
 
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
     await waitForInitialization();
 
     const editor = screen.getByTestId('mock-sql-editor');
@@ -218,28 +262,32 @@ describe('ExerciseRunner Component', () => {
     });
 
     const runButton = screen.getByRole('button', { name: /▶️ Run SQL/i });
-     await act(async () => {
+    await act(async () => {
       await userEvent.click(runButton);
     });
 
     await waitFor(() => {
       expect(mockDbExec).toHaveBeenCalledWith(incorrectUserQuery);
-      expect(screen.getByText(/Incorrect. Check your query/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Incorrect. Check your query/i)
+      ).toBeInTheDocument();
     });
     expect(screen.getByText('Alice')).toBeInTheDocument();
     expect(screen.queryByText('Bob')).not.toBeInTheDocument();
   });
 
   it('displays error message if query execution fails', async () => {
-    const errorQuery = "SELECT error;";
+    const errorQuery = 'SELECT error;';
     const errorMessage = "Syntax error near 'error'";
-    mockDbExec.mockImplementation(query => {
+    mockDbExec.mockImplementation((query) => {
       if (query === mockExerciseDetail.correctQuery) return correctQueryResults;
       if (query === errorQuery) throw new Error(errorMessage);
-      return createMockResults([],[]);
+      return createMockResults([], []);
     });
 
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
     await waitForInitialization();
 
     const editor = screen.getByTestId('mock-sql-editor');
@@ -259,14 +307,16 @@ describe('ExerciseRunner Component', () => {
   });
 
   it('handles Shift+Enter in SqlEditor to run query', async () => {
-    render(<ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />);
+    render(
+      <ExerciseRunner exerciseDetail={mockExerciseDetail} darkMode={false} />
+    );
     await waitForInitialization();
 
     const editor = screen.getByTestId('mock-sql-editor');
-    const userQuery = "SELECT 1;";
+    const userQuery = 'SELECT 1;';
 
     // Specific mock for the user's query in this test
-    mockDbExec.mockImplementation(query => {
+    mockDbExec.mockImplementation((query) => {
       if (query === mockExerciseDetail.correctQuery) return correctQueryResults;
       if (query === userQuery) return createMockResults(['1'], [[1]]);
       return createMockResults([], []);
@@ -282,8 +332,7 @@ describe('ExerciseRunner Component', () => {
     });
 
     await waitFor(() => {
-        expect(mockDbExec).toHaveBeenCalledWith(userQuery);
+      expect(mockDbExec).toHaveBeenCalledWith(userQuery);
     });
   });
-
 });

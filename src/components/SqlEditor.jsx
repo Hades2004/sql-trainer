@@ -1,23 +1,32 @@
-import CodeMirror from '@uiw/react-codemirror';
-import { sql } from '@codemirror/lang-sql';
-import { keymap, EditorView } from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
+import { sql } from '@codemirror/lang-sql';
 import { Prec } from '@codemirror/state';
+import { keymap, EditorView } from '@codemirror/view';
+import CodeMirror from '@uiw/react-codemirror';
 
-const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = false, theme }) => {
-  const customKeymap = Prec.high(keymap.of([
-    {
-      key: "Shift-Enter",
-      run: () => {
-        if (onExecute) {
-          onExecute();
-          return true;
-        }
-        return false;
+const SqlEditor = ({
+  value,
+  onChange,
+  onExecute,
+  height = '200px',
+  readOnly = false,
+  theme,
+}) => {
+  const customKeymap = Prec.high(
+    keymap.of([
+      {
+        key: 'Shift-Enter',
+        run: () => {
+          if (onExecute) {
+            onExecute();
+            return true;
+          }
+          return false;
+        },
+        preventDefault: true,
       },
-      preventDefault: true,
-    }
-  ]));
+    ])
+  );
 
   return (
     <CodeMirror
@@ -27,7 +36,7 @@ const SqlEditor = ({ value, onChange, onExecute, height = '200px', readOnly = fa
         sql(),
         keymap.of(defaultKeymap),
         customKeymap,
-        EditorView.lineWrapping
+        EditorView.lineWrapping,
       ]}
       theme={theme}
       onChange={onChange}
