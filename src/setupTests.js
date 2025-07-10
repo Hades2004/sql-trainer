@@ -49,11 +49,21 @@ vi.mock('react-i18next', async (importOriginal) => {
     // Add other keys used directly or via interpolation in tests here
   };
 
+  // Helper function to escape special characters for use in RegExp
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
+
   const stableMockT = (key, options) => {
+    // eslint-disable-next-line security/detect-object-injection
     let translation = mockTranslations[key] || key;
+    // eslint-disable-next-line security/detect-object-injection
     if (options && mockTranslations[key]) {
       Object.keys(options).forEach((optKey) => {
-        const regex = new RegExp(`{{${optKey}}}`, 'g');
+        const escapedOptKey = escapeRegExp(optKey);
+        // eslint-disable-next-line security/detect-non-literal-regexp
+        const regex = new RegExp(`{{${escapedOptKey}}}`, 'g');
+        // eslint-disable-next-line security/detect-object-injection
         translation = translation.replace(regex, options[optKey]);
       });
     }

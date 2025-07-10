@@ -18,6 +18,7 @@ export default function HomePage({ darkMode }) {
     if (tips.length > 0) {
       const initialTipIndex = Math.floor(Math.random() * tips.length);
       return {
+        // eslint-disable-next-line security/detect-object-injection
         currentTip: tips[initialTipIndex],
         lastTipIndex: initialTipIndex,
       };

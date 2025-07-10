@@ -101,12 +101,15 @@ describe('ExerciseRunner Component', () => {
       const correctRes = correct[0];
       if (!userRes || !correctRes) return false;
       if (userRes.columns.length !== correctRes.columns.length) return false;
+      // eslint-disable-next-line security/detect-object-injection
       if (!userRes.columns.every((col, i) => col === correctRes.columns[i]))
         return false;
       if (userRes.values.length !== correctRes.values.length) return false;
       return userRes.values.every(
         (row, i) =>
+          // eslint-disable-next-line security/detect-object-injection
           row.length === correctRes.values[i].length &&
+          // eslint-disable-next-line security/detect-object-injection
           row.every((cell, j) => cell === correctRes.values[i][j])
       );
     };

@@ -23,14 +23,18 @@ const compareResults = (userResult, correctResult) => {
   // Compare columns
   if (userRes.columns.length !== correctRes.columns.length) return false;
   for (let i = 0; i < userRes.columns.length; i++) {
+    // eslint-disable-next-line security/detect-object-injection
     if (userRes.columns[i] !== correctRes.columns[i]) return false;
   }
 
   // Compare values
   if (userRes.values.length !== correctRes.values.length) return false;
   for (let i = 0; i < userRes.values.length; i++) {
+    // eslint-disable-next-line security/detect-object-injection
     if (userRes.values[i].length !== correctRes.values[i].length) return false;
+    // eslint-disable-next-line security/detect-object-injection
     for (let j = 0; j < userRes.values[i].length; j++) {
+      // eslint-disable-next-line security/detect-object-injection
       if (userRes.values[i][j] !== correctRes.values[i][j]) return false;
     }
   }

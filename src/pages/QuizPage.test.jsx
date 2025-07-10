@@ -147,6 +147,7 @@ describe('QuizPage Component with Regular Data', () => {
   it('completes the quiz and shows results', async () => {
     render(<QuizPage />);
     for (let i = 0; i < mockQuizDataRegular.length; i++) {
+      // eslint-disable-next-line security/detect-object-injection
       const question = mockQuizDataRegular[i];
       const answerOptionText = question.options[0]; // Always pick the first option
 
@@ -185,6 +186,7 @@ describe('QuizPage Component with Regular Data', () => {
     render(<QuizPage />);
     for (let i = 0; i < mockQuizDataRegular.length; i++) {
       const answerOption = await screen.findByRole('button', {
+        // eslint-disable-next-line security/detect-object-injection
         name: mockQuizDataRegular[i].options[0],
       });
       await act(async () => {
