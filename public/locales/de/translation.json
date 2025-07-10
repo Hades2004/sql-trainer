@@ -40,5 +40,7 @@
   "feedbackQueryFailed": "Abfrageausführung fehlgeschlagen. Überprüfe deine SQL-Syntax.",
   "queryResults": "Abfrageergebnisse",
   "noResultsToDisplay": "Keine Ergebnisse zum Anzeigen. Führe eine Abfrage aus oder suche nach Fehlern.",
-  "queryReturnedNoRows": "Abfrage erfolgreich ausgeführt, lieferte aber keine Zeilen zurück."
+  "queryReturnedNoRows": "Abfrage erfolgreich ausgeführt, lieferte aber keine Zeilen zurück.",
+  "sqlQueryEditorLabel": "SQL-Abfrageeingabebereich",
+  "quizProgress": "Quiz-Fortschritt"
 }

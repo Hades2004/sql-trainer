@@ -170,6 +170,10 @@ This project uses [ESLint](https://eslint.org/) for identifying and reporting on
 **Pre-commit Hooks:**
 This project uses [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged) to automatically run ESLint (with `--fix`) and Prettier on staged files before each commit. This helps ensure that code pushed to the repository adheres to the project's coding standards and formatting guidelines.
 
+### Code Quality
+
+- **PropTypes**: React components use `PropTypes` for runtime type checking of props, ensuring better component API clarity and easier debugging. This is enforced by the `react/prop-types` ESLint rule.
+
 ## 📂 Project Structure
 
 A brief overview of the main directories and files:
@@ -219,12 +223,6 @@ This project is configured for easy deployment to GitHub Pages. It automatically
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you have ideas for improvements or find any issues, please feel free to:
+Contributions are welcome! We value feedback and contributions from the community. Please see our [**Contributing Guidelines (CONTRIBUTING.md)**](CONTRIBUTING.md) for detailed information on how to get started, our coding standards, and the pull request process.
 
-1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
-
-Alternatively, you can also open an issue with the tag "enhancement" or "bug".
+You can also open an issue with the tag "enhancement" or "bug". We also adhere to a [**Code of Conduct (CODE_OF_CONDUCT.md)**](CODE_OF_CONDUCT.md) to ensure a welcoming environment for everyone.
