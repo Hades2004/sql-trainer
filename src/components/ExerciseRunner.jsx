@@ -1,4 +1,5 @@
 import { sublime } from '@uiw/codemirror-theme-sublime';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import initSqlJs from 'sql.js';
@@ -132,7 +133,10 @@ export default function ExerciseRunner({ exerciseDetail, darkMode }) {
         {schema}
       </pre>
 
-      <h4 className='text-lg font-semibold mt-6 mb-2 text-gray-900 dark:text-gray-100'>
+      <h4
+        id='yourSQLQueryLabel'
+        className='text-lg font-semibold mt-6 mb-2 text-gray-900 dark:text-gray-100'
+      >
         {t('yourSQLQuery')}
       </h4>
       <SqlEditor
@@ -141,6 +145,7 @@ export default function ExerciseRunner({ exerciseDetail, darkMode }) {
         onExecute={runUserQuery} // Pass runUserQuery to handle Shift+Enter
         height='128px' // h-32 equivalent
         theme={darkMode ? sublime : 'light'} // Pass the theme based on darkMode
+        aria-labelledby='yourSQLQueryLabel'
       />
 
       <button
@@ -227,3 +232,14 @@ export default function ExerciseRunner({ exerciseDetail, darkMode }) {
     </div>
   );
 }
+
+ExerciseRunner.propTypes = {
+  exerciseDetail: PropTypes.shape({
+    taskDescription: PropTypes.string.isRequired,
+    schema: PropTypes.string.isRequired,
+    sampleDataSetup: PropTypes.string.isRequired,
+    correctQuery: PropTypes.string.isRequired,
+    initialQuery: PropTypes.string,
+  }).isRequired,
+  darkMode: PropTypes.bool.isRequired,
+};

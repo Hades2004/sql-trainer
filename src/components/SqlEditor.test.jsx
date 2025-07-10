@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { materialLight } from '@uiw/codemirror-theme-material';
+import PropTypes from 'prop-types'; // Import PropTypes for the mock
 import React from 'react';
 import { vi } from 'vitest';
 
@@ -81,7 +82,9 @@ vi.mock('@uiw/react-codemirror', () => {
       <div
         data-testid='mock-codemirror'
         style={{ height }}
-        data-theme={theme?.constructor?.name}
+        data-theme={
+          typeof theme === 'object' ? theme.constructor.name : String(theme)
+        }
         data-has-execute-keymap={String(hasExecuteKeymap)}
       >
         <textarea
@@ -92,6 +95,23 @@ vi.mock('@uiw/react-codemirror', () => {
         />
       </div>
     );
+  };
+
+  // Add PropTypes to the mock component
+  MockCodeMirrorComponent.propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    extensions: PropTypes.array, // Looser type for mock, or more specific if needed
+    theme: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    height: PropTypes.string,
+    readOnly: PropTypes.bool,
+  };
+
+  MockCodeMirrorComponent.defaultProps = {
+    extensions: [],
+    theme: 'light',
+    height: '200px',
+    readOnly: false,
   };
 
   return {

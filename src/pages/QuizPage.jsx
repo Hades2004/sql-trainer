@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Removed useEffect
+import React, { useState, useRef, useEffect } from 'react'; // Added useRef, useEffect
 import { useTranslation } from 'react-i18next';
 
 import quizQuestions from '../data/quizQuestions.json';
@@ -7,6 +7,7 @@ export default function QuizPage() {
   const { t } = useTranslation();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const nextQuestionButtonRef = useRef(null); // Ref for the Next Question button
   const [isCorrect, setIsCorrect] = useState(null);
   const [score, setScore] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -31,6 +32,13 @@ export default function QuizPage() {
       setIsCorrect(false);
     }
   };
+
+  // Effect to focus the "Next Question" button when feedback is shown
+  useEffect(() => {
+    if (showFeedback && nextQuestionButtonRef.current) {
+      nextQuestionButtonRef.current.focus();
+    }
+  }, [showFeedback]);
 
   // Function to move to the next question
   const handleNextQuestion = () => {
@@ -104,7 +112,18 @@ export default function QuizPage() {
             </span>
             <span>{t('scoreLabel', { score: score })}</span>
           </div>
-          <div className='w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5'>
+          <div
+            className='w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5'
+            role='progressbar'
+            aria-valuemin='0'
+            aria-valuemax={quizQuestions.length}
+            aria-valuenow={currentQuestionIndex + 1}
+            aria-valuetext={t('questionOutOf', {
+              current: currentQuestionIndex + 1,
+              total: quizQuestions.length,
+            })}
+            aria-label={t('quizProgress')} // General label for the progress bar
+          >
             <div
               className='bg-blue-600 h-2.5 rounded-full'
               style={{
@@ -157,6 +176,7 @@ export default function QuizPage() {
         {showFeedback && (
           <div
             className={`p-3 rounded-md mb-4 text-sm font-medium ${isCorrect ? 'bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-200' : 'bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-200'}`}
+            aria-live='polite' // Added aria-live
           >
             {isCorrect
               ? t('correctExclamation')
@@ -167,6 +187,7 @@ export default function QuizPage() {
         )}
 
         <button
+          ref={nextQuestionButtonRef} // Added ref
           onClick={handleNextQuestion}
           disabled={!showFeedback}
           className='w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow

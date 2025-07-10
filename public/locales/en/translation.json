@@ -40,5 +40,7 @@
   "feedbackQueryFailed": "Query execution failed. Check your SQL syntax.",
   "queryResults": "Query Results",
   "noResultsToDisplay": "No results to display. Run a query or check for errors.",
-  "queryReturnedNoRows": "Query executed successfully, but returned no rows."
+  "queryReturnedNoRows": "Query executed successfully, but returned no rows.",
+  "sqlQueryEditorLabel": "SQL Query Input Area",
+  "quizProgress": "Quiz Progress"
 }

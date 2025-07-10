@@ -3,6 +3,7 @@ import { sql } from '@codemirror/lang-sql';
 import { Prec } from '@codemirror/state';
 import { keymap, EditorView } from '@codemirror/view';
 import CodeMirror from '@uiw/react-codemirror';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const SqlEditor = ({
   value,
@@ -11,6 +12,8 @@ const SqlEditor = ({
   height = '200px',
   readOnly = false,
   theme,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby, // Add aria-labelledby prop
 }) => {
   const customKeymap = Prec.high(
     keymap.of([
@@ -41,6 +44,8 @@ const SqlEditor = ({
       theme={theme}
       onChange={onChange}
       readOnly={readOnly}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby} // Pass aria-labelledby to CodeMirror
       basicSetup={{
         lineNumbers: true,
         highlightActiveLine: true,
@@ -57,6 +62,26 @@ const SqlEditor = ({
       }}
     />
   );
+};
+
+SqlEditor.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onExecute: PropTypes.func,
+  height: PropTypes.string,
+  readOnly: PropTypes.bool,
+  theme: PropTypes.oneOfType([PropTypes.string, PropTypes.object]), // Theme can be a string or an editor theme object
+  'aria-label': PropTypes.string,
+  'aria-labelledby': PropTypes.string, // Add prop type for aria-labelledby
+};
+
+SqlEditor.defaultProps = {
+  onExecute: null,
+  height: '200px',
+  readOnly: false,
+  theme: 'light', // Or your preferred default theme
+  'aria-label': undefined,
+  'aria-labelledby': undefined, // Default aria-labelledby to undefined
 };
 
 export default SqlEditor;

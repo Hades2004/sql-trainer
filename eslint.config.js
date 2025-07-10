@@ -121,7 +121,7 @@ export default [
         : {}),
 
       'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
+      'react/prop-types': 'error', // Changed from 'off' to 'error'
       'jsx-a11y/anchor-is-valid': 'warn',
       'no-unused-vars': [
         'warn',

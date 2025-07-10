@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useParams, Link } from 'react-router-dom'; // Added Link
 
 import ExerciseRunner from '../components/ExerciseRunner';
@@ -149,3 +150,7 @@ export default function ExerciseDisplayPage({ darkMode }) {
     </div>
   );
 }
+
+ExerciseDisplayPage.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+};

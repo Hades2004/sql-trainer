@@ -1,4 +1,5 @@
 import { sublime } from '@uiw/codemirror-theme-sublime';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 import initSqlJs from 'sql.js';
@@ -80,6 +81,7 @@ export default function HomePage({ darkMode }) {
         onExecute={runQuery} // Pass runUserQuery to handle Shift+Enter
         height='160px' // Adjusted height for the new editor
         theme={darkMode ? sublime : 'light'} // Pass the theme based on darkMode
+        aria-label={t('sqlQueryEditorLabel')}
       />
 
       <button
@@ -146,3 +148,7 @@ export default function HomePage({ darkMode }) {
     </div>
   );
 }
+
+HomePage.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+};

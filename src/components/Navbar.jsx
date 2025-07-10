@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { Link } from 'react-router-dom';
@@ -8,6 +9,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const menuDropdownRef = useRef(null);
   const langDropdownRef = useRef(null);
+  const langToggleButtonRef = useRef(null); // Ref for the language toggle button
+  const menuToggleButtonRef = useRef(null); // Ref for the user menu toggle button
 
   const toggleMenuDropdown = () => setMenuDropdownOpen(!menuDropdownOpen);
   const toggleLangDropdown = () => setLangDropdownOpen(!langDropdownOpen);
@@ -15,6 +18,57 @@ export default function Navbar({ darkMode, setDarkMode }) {
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setLangDropdownOpen(false); // Close dropdown after selection
+    langToggleButtonRef.current?.focus(); // Return focus to the button
+  };
+
+  const handleLangMenuKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setLangDropdownOpen(false);
+      langToggleButtonRef.current?.focus(); // Return focus to the button
+    }
+    // Basic arrow key support (can be expanded)
+    // This is simplified; full robust arrow key nav is complex
+    // Often relies on browser's native role="menuitem" handling or a library
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const items = Array.from(
+        langDropdownRef.current.querySelectorAll('[role="menuitem"]')
+      );
+      const activeElement = document.activeElement;
+      let currentIndex = items.findIndex((item) => item === activeElement);
+
+      if (event.key === 'ArrowDown') {
+        currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+      } else {
+        // ArrowUp
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+      }
+      items[currentIndex]?.focus();
+    }
+  };
+
+  const handleUserMenuKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setMenuDropdownOpen(false);
+      menuToggleButtonRef.current?.focus(); // Return focus to the button
+    }
+    // Basic arrow key support for Links (more complex for full menu behavior)
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const items = Array.from(
+        menuDropdownRef.current.querySelectorAll('[role="menuitem"]')
+      );
+      const activeElement = document.activeElement;
+      let currentIndex = items.findIndex((item) => item === activeElement);
+
+      if (event.key === 'ArrowDown') {
+        currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+      } else {
+        // ArrowUp
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+      }
+      items[currentIndex]?.focus();
+    }
   };
 
   // Effect for closing menu dropdown on outside click
@@ -71,6 +125,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
               <div>
                 <button
                   type='button'
+                  id='language-menu-button' // Added id
+                  ref={langToggleButtonRef} // Added ref
                   onClick={toggleLangDropdown}
                   className='px-3 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white flex items-center'
                   aria-expanded={langDropdownOpen}
@@ -104,6 +160,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   className='origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg py-1 bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none z-20' // Increased z-index
                   role='menu'
                   aria-orientation='vertical'
+                  aria-labelledby='language-menu-button' // Added aria-labelledby
+                  onKeyDown={handleLangMenuKeyDown} // Added keydown handler
+                  tabIndex='-1' // Added tabIndex
                 >
                   {Object.keys(languages).map((lng) => (
                     <button
@@ -139,6 +198,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
               <div>
                 <button
                   type='button'
+                  ref={menuToggleButtonRef} // Added ref
                   className='bg-gray-200 dark:bg-gray-700 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'
                   id='user-menu-button'
                   aria-expanded={menuDropdownOpen}
@@ -152,6 +212,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                     fill='none'
                     viewBox='0 0 24 24'
                     stroke='currentColor'
+                    aria-hidden='true' // Added aria-hidden
                   >
                     <path
                       strokeLinecap='round'
@@ -170,6 +231,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   aria-orientation='vertical'
                   aria-labelledby='user-menu-button'
                   tabIndex='-1'
+                  onKeyDown={handleUserMenuKeyDown} // Added keydown handler
                 >
                   <Link
                     to='/sql-trainer/'
@@ -220,3 +282,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
     </nav>
   );
 }
+
+Navbar.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  setDarkMode: PropTypes.func.isRequired,
+};
