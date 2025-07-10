@@ -72,10 +72,28 @@ jobs:
       - name: Run prettier check
         run: npx prettier --check "src/**/*.{js,jsx,json,css,md}" "*.{js,json,md}" ".github/**/*.{yml,md}"
 
+  security_audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install # Full install to ensure audit has all info
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
   build:
     name: Build Project
     runs-on: ubuntu-latest
-    needs: [test, lint, format_check] # Make build depend on test, lint, and format_check passing
+    needs: [test, lint, format_check, security_audit] # Make build depend on test, lint, format_check, and security_audit passing
     steps:
       - name: Check out code
         uses: actions/checkout@v3
