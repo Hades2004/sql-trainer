@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@codemirror/commands": "^6.8.1",
-    "@codemirror/lang-sql": "^6.9.0",
+    "@codemirror/lang-sql": "^6.9.1",
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.38.0",
     "@uiw/codemirror-theme-material": "^4.24.1",
